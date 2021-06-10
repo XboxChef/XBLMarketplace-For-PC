@@ -115,8 +115,6 @@ packages/Newtonsoft.Json.13.0.1/lib/netstandard2.0/Newtonsoft.Json.xml
 packages/Newtonsoft.Json.13.0.1/LICENSE.md
 packages/Newtonsoft.Json.13.0.1/Newtonsoft.Json.13.0.1.nupkg
 packages/Newtonsoft.Json.13.0.1/packageIcon.png
-XBLMarketplace For PC.csproj
-XBLMarketplace For PC.sln
 obj/Debug/XBLMarketplace_For_PC.Properties.Resources.resources
 obj/Debug/XBLMarketplace_For_PC.Forms.Main.resources
 obj/Debug/XBLMarketplace_For_PC.Forms.ExtraInformation.resources
