@@ -9,26 +9,26 @@ using System;
 
 namespace XBLMarketplace_For_PC.Types
 {
-  public class OfferEntry
-  {
-    public string Tier { get; set; }
+    public class OfferEntry
+    {
+        public string Tier { get; set; }
 
-    public string Price { get; set; }
+        public string Price { get; set; }
 
-    public bool IsAcquirable { get; set; }
+        public bool IsAcquirable { get; set; }
 
-    public string ContentId { get; set; }
+        public string ContentId { get; set; }
 
-    [JsonIgnore]
-    private byte[] ContentIdByteArray => this.ContentId != null ? Convert.FromBase64String(this.ContentId) : (byte[]) null;
+        [JsonIgnore]
+        private byte[] ContentIdByteArray => ContentId != null ? Convert.FromBase64String(ContentId) : null;
 
-    [JsonIgnore]
-    public string Xcpfilename => this.ContentId != null ? BitConverter.ToString(this.ContentIdByteArray).Replace("-", string.Empty).ToLower() + ".xcp" : (string) null;
+        [JsonIgnore]
+        public string Xcpfilename => ContentId != null ? BitConverter.ToString(ContentIdByteArray).Replace("-", string.Empty).ToLower() + ".xcp" : null;
 
-    public bool Urlchecked { get; set; }
+        public bool Urlchecked { get; set; }
 
-    public string Reason { get; set; } = "Unchecked";
+        public string Reason { get; set; } = "Unchecked";
 
-    public string DownloadUrl { get; set; }
-  }
+        public string DownloadUrl { get; set; }
+    }
 }

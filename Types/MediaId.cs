@@ -8,20 +8,20 @@ using System.ComponentModel;
 
 namespace XBLMarketplace_For_PC.Types
 {
-  public class MediaId
-  {
-    public MediaId(string displayName, string idValue)
+    public class MediaId
     {
-      this.Name = displayName;
-      this.Id = idValue;
+        public MediaId(string displayName, string idValue)
+        {
+            Name = displayName;
+            Id = idValue;
+        }
+
+        public string Name { get; private set; }
+
+        [Browsable(false)]
+        public string Id { get; private set; }
+
+        [Browsable(false)]
+        public int TotalCount { get; set; }
     }
-
-    public string Name { get; private set; }
-
-    [Browsable(false)]
-    public string Id { get; private set; }
-
-    [Browsable(false)]
-    public int TotalCount { get; set; }
-  }
 }

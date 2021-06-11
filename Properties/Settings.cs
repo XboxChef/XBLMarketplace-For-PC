@@ -12,101 +12,101 @@ using System.Runtime.CompilerServices;
 
 namespace XBLMarketplace_For_PC.Properties
 {
-  [CompilerGenerated]
-  [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-  internal sealed class Settings : ApplicationSettingsBase
-  {
-    private static Settings defaultInstance = (Settings) SettingsBase.Synchronized((SettingsBase) new Settings());
-
-    private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
+    [CompilerGenerated]
+    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    internal sealed class Settings : ApplicationSettingsBase
     {
-    }
+        private static Settings defaultInstance = (Settings)SettingsBase.Synchronized((SettingsBase)new Settings());
 
-    private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
-    {
-    }
+        private void SettingChangingEventHandler(object sender, SettingChangingEventArgs e)
+        {
+        }
 
-    public static Settings Default => Settings.defaultInstance;
+        private void SettingsSavingEventHandler(object sender, CancelEventArgs e)
+        {
+        }
 
-    [DefaultSettingValue("50")]
-    [UserScopedSetting]
-    [DebuggerNonUserCode]
-    public int entry_per_page
-    {
-      get => (int) this[nameof (entry_per_page)];
-      set => this[nameof (entry_per_page)] = (object) value;
-    }
+        public static Settings Default => Settings.defaultInstance;
 
-    [DefaultSettingValue("1")]
-    [DebuggerNonUserCode]
-    [UserScopedSetting]
-    public int last_page_viewed
-    {
-      get => (int) this[nameof (last_page_viewed)];
-      set => this[nameof (last_page_viewed)] = (object) value;
-    }
+        [DefaultSettingValue("50")]
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        public int entry_per_page
+        {
+            get => (int)this[nameof(entry_per_page)];
+            set => this[nameof(entry_per_page)] = (object)value;
+        }
 
-    [DefaultSettingValue("0")]
-    [UserScopedSetting]
-    [DebuggerNonUserCode]
-    public int regionindex
-    {
-      get => (int) this[nameof (regionindex)];
-      set => this[nameof (regionindex)] = (object) value;
-    }
+        [DefaultSettingValue("1")]
+        [DebuggerNonUserCode]
+        [UserScopedSetting]
+        public int last_page_viewed
+        {
+            get => (int)this[nameof(last_page_viewed)];
+            set => this[nameof(last_page_viewed)] = (object)value;
+        }
 
-    [UserScopedSetting]
-    [DefaultSettingValue("0")]
-    [DebuggerNonUserCode]
-    public int mediaindex
-    {
-      get => (int) this[nameof (mediaindex)];
-      set => this[nameof (mediaindex)] = (object) value;
-    }
+        [DefaultSettingValue("0")]
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        public int regionindex
+        {
+            get => (int)this[nameof(regionindex)];
+            set => this[nameof(regionindex)] = (object)value;
+        }
 
-    [DefaultSettingValue("0")]
-    [UserScopedSetting]
-    [DebuggerNonUserCode]
-    public int languageindex
-    {
-      get => (int) this[nameof (languageindex)];
-      set => this[nameof (languageindex)] = (object) value;
-    }
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        [DebuggerNonUserCode]
+        public int mediaindex
+        {
+            get => (int)this[nameof(mediaindex)];
+            set => this[nameof(mediaindex)] = (object)value;
+        }
 
-    [DefaultSettingValue("2")]
-    [UserScopedSetting]
-    [DebuggerNonUserCode]
-    public int batchdelay
-    {
-      get => (int) this[nameof (batchdelay)];
-      set => this[nameof (batchdelay)] = (object) value;
-    }
+        [DefaultSettingValue("0")]
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        public int languageindex
+        {
+            get => (int)this[nameof(languageindex)];
+            set => this[nameof(languageindex)] = (object)value;
+        }
 
-    [DefaultSettingValue("")]
-    [UserScopedSetting]
-    [DebuggerNonUserCode]
-    public string DecompressPathString
-    {
-      get => (string) this[nameof (DecompressPathString)];
-      set => this[nameof (DecompressPathString)] = (object) value;
-    }
+        [DefaultSettingValue("2")]
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        public int batchdelay
+        {
+            get => (int)this[nameof(batchdelay)];
+            set => this[nameof(batchdelay)] = (object)value;
+        }
 
-    [DefaultSettingValue("")]
-    [DebuggerNonUserCode]
-    [UserScopedSetting]
-    public string IsoPathString
-    {
-      get => (string) this[nameof (IsoPathString)];
-      set => this[nameof (IsoPathString)] = (object) value;
-    }
+        [DefaultSettingValue("")]
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        public string DecompressPathString
+        {
+            get => (string)this[nameof(DecompressPathString)];
+            set => this[nameof(DecompressPathString)] = (object)value;
+        }
 
-    [DebuggerNonUserCode]
-    [DefaultSettingValue("")]
-    [UserScopedSetting]
-    public string DownloadPathString
-    {
-      get => (string) this[nameof (DownloadPathString)];
-      set => this[nameof (DownloadPathString)] = (object) value;
+        [DefaultSettingValue("")]
+        [DebuggerNonUserCode]
+        [UserScopedSetting]
+        public string IsoPathString
+        {
+            get => (string)this[nameof(IsoPathString)];
+            set => this[nameof(IsoPathString)] = (object)value;
+        }
+
+        [DebuggerNonUserCode]
+        [DefaultSettingValue("")]
+        [UserScopedSetting]
+        public string DownloadPathString
+        {
+            get => (string)this[nameof(DownloadPathString)];
+            set => this[nameof(DownloadPathString)] = (object)value;
+        }
     }
-  }
 }

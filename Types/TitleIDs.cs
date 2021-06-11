@@ -8,11 +8,11 @@ using System.Collections.Generic;
 
 namespace XBLMarketplace_For_PC.Types
 {
-  internal class TitleIDs
-  {
-    public string Alttitleid;
-    public string HextitleId;
-    public List<OfferEntry> Offers = new List<OfferEntry>();
-    public string ProductInstanceId;
-  }
+    internal class TitleIDs
+    {
+        public string Alttitleid;
+        public string HextitleId;
+        public List<OfferEntry> Offers = new List<OfferEntry>();
+        public string ProductInstanceId;
+    }
 }

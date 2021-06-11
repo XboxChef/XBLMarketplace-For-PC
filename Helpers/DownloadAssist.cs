@@ -13,56 +13,56 @@ using XBLMarketplace_For_PC.Types;
 
 namespace XBLMarketplace_For_PC.Helpers
 {
-  public class DownloadAssist
-  {
-    private int _altTitleId;
-    private string _fullDownloadUrl;
-    private string _hexTitleId;
-    private string _productInstanceId;
-    public SaveLoadData FileCache = new SaveLoadData();
-    public string Host = "download.xboxlive.com";
-    public string Location = "/content";
-
-    public string FullDownloadUrl
+    public class DownloadAssist
     {
-      get
-      {
-        if (this.Offers.Count <= 0 || this.Offers[0].Xcpfilename == null)
-          return (string) null;
-        if (this._fullDownloadUrl == "http://download.xboxlive.com/content/0/" || this._fullDownloadUrl == null)
-          this._fullDownloadUrl = new UriBuilder()
-          {
-            Scheme = "http",
-            Host = this.Host,
-            Path = (this.Location + "/" + (this.HexTitleId ?? this.AltTitleId) + "/" + this.Offers[0].Xcpfilename)
-          }.ToString();
-        return this._fullDownloadUrl;
-      }
-    }
+        private int _altTitleId;
+        private string _fullDownloadUrl;
+        private string _hexTitleId;
+        private string _productInstanceId;
+        public SaveLoadData FileCache = new SaveLoadData();
+        public string Host = "download.xboxlive.com";
+        public string Location = "/content";
 
-    public string ProductInstanceId
-    {
-      get => this._productInstanceId;
-      set => this._productInstanceId = value.ToAlphaNumeric();
-    }
+        public string FullDownloadUrl
+        {
+            get
+            {
+                if (Offers.Count <= 0 || Offers[0].Xcpfilename == null)
+                    return null;
+                if (_fullDownloadUrl == "http://download.xboxlive.com/content/0/" || _fullDownloadUrl == null)
+                    _fullDownloadUrl = new UriBuilder()
+                    {
+                        Scheme = "http",
+                        Host = Host,
+                        Path = (Location + "/" + (HexTitleId ?? AltTitleId) + "/" + Offers[0].Xcpfilename)
+                    }.ToString();
+                return _fullDownloadUrl;
+            }
+        }
 
-    public string HexTitleId
-    {
-      get => this._hexTitleId;
-      set => this._hexTitleId = value.Remove(0, 2);
-    }
+        public string ProductInstanceId
+        {
+            get => _productInstanceId;
+            set => _productInstanceId = value.ToAlphaNumeric();
+        }
 
-    public string AltTitleId
-    {
-      get => this._altTitleId.ToString("x");
-      set => this._altTitleId = Convert.ToInt32(value);
-    }
+        public string HexTitleId
+        {
+            get => _hexTitleId;
+            set => _hexTitleId = value.Remove(0, 2);
+        }
 
-    [Browsable(false)]
-    public List<OfferEntry> Offers
-    {
-      get => this.FileCache.Offers;
-      set => this.FileCache.Offers = value;
+        public string AltTitleId
+        {
+            get => _altTitleId.ToString("x");
+            set => _altTitleId = Convert.ToInt32(value);
+        }
+
+        [Browsable(false)]
+        public List<OfferEntry> Offers
+        {
+            get => FileCache.Offers;
+            set => FileCache.Offers = value;
+        }
     }
-  }
 }

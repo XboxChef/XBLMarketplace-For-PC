@@ -9,14 +9,14 @@ using System.Windows.Forms;
 
 namespace XBLMarketplace_For_PC
 {
-  internal static class Program
-  {
-    [STAThread]
-    private static void Main()
+    internal static class Program
     {
-      Application.EnableVisualStyles();
-      Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run((Form) new XBLMarketplace_For_PC.Forms.Main());
+        [STAThread]
+        private static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new XBLMarketplace_For_PC.Forms.Main());
+        }
     }
-  }
 }

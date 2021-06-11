@@ -8,28 +8,28 @@ using ComponentOwl.BetterListView;
 
 namespace XBLMarketplace_For_PC.FormComponents
 {
-  public class BetterListViewExColumnHeader : BetterListViewColumnHeader
-  {
-    private BetterListViewExColumnType columnType;
-
-    public BetterListViewExColumnHeader(
-      BetterListViewExColumnType columnType,
-      string text,
-      int width)
-      : base(text, width)
+    public class BetterListViewExColumnHeader : BetterListViewColumnHeader
     {
-      this.ColumnType = columnType;
-      this.Style = BetterListViewColumnHeaderStyle.Sortable;
-    }
+        private BetterListViewExColumnType columnType;
 
-    public BetterListViewExColumnHeader()
-    {
-    }
+        public BetterListViewExColumnHeader(
+          BetterListViewExColumnType columnType,
+          string text,
+          int width)
+          : base(text, width)
+        {
+            ColumnType = columnType;
+            Style = BetterListViewColumnHeaderStyle.Sortable;
+        }
 
-    public BetterListViewExColumnType ColumnType
-    {
-      get => this.columnType;
-      set => this.columnType = value;
+        public BetterListViewExColumnHeader()
+        {
+        }
+
+        public BetterListViewExColumnType ColumnType
+        {
+            get => columnType;
+            set => columnType = value;
+        }
     }
-  }
 }

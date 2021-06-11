@@ -8,8 +8,8 @@ using System;
 
 namespace XBLMarketplace_For_PC.Types
 {
-  public class IsoInstance
-  {
-    private IsoInstance() => throw new NotImplementedException();
-  }
+    public class IsoInstance
+    {
+        private IsoInstance() => throw new NotImplementedException();
+    }
 }

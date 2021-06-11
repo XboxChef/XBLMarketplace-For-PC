@@ -11,44 +11,44 @@ using System.Windows.Forms;
 
 namespace XBLMarketplace_For_PC.FormComponents
 {
-  public class BetterListViewEx : ComponentOwl.BetterListView.BetterListView
-  {
-    protected override void OnDrawItem(BetterListViewDrawItemEventArgs eventArgs)
+    public class BetterListViewEx : ComponentOwl.BetterListView.BetterListView
     {
-      int num1 = 100;
-      base.OnDrawItem(eventArgs);
-      if (this.View != BetterListViewView.Details)
-        return;
-      Graphics graphics = eventArgs.Graphics;
-      foreach (BetterListViewSubItem subItem in (BetterListViewElementCollection<BetterListViewSubItem>) eventArgs.Item.SubItems)
-      {
-        if (subItem.Index >= this.Columns.Count)
-          break;
-        Rectangle boundsInner = eventArgs.ItemBounds.SubItemBounds[subItem.Index].BoundsInner;
-        if (boundsInner.Width > 0 && boundsInner.Height > 0)
+        protected override void OnDrawItem(BetterListViewDrawItemEventArgs eventArgs)
         {
-          BetterListViewExColumnType? columnType = ((BetterListViewExColumnHeader) this.Columns[subItem.Index])?.ColumnType;
-          if (columnType.HasValue && columnType.GetValueOrDefault() == BetterListViewExColumnType.PercentDone && (boundsInner.Width > 4 && boundsInner.Height > 4) && subItem.Value is short)
-          {
-            int height = Math.Min(16, boundsInner.Height);
-            Rectangle rectangle = new Rectangle(boundsInner.Left, boundsInner.Top + (boundsInner.Height - height >> 1), boundsInner.Width - 2, height);
-            short num2 = (short) subItem.Value;
-            if (ProgressBarRenderer.IsSupported)
+            int num1 = 100;
+            base.OnDrawItem(eventArgs);
+            if (View != BetterListViewView.Details)
+                return;
+            Graphics graphics = eventArgs.Graphics;
+            foreach (BetterListViewSubItem subItem in eventArgs.Item.SubItems)
             {
-              Rectangle bounds = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, (int) num2 * (rectangle.Width - 1) / num1, rectangle.Height - 2);
-              ProgressBarRenderer.DrawHorizontalBar(graphics, rectangle);
-              ProgressBarRenderer.DrawHorizontalChunks(graphics, bounds);
+                if (subItem.Index >= Columns.Count)
+                    break;
+                Rectangle boundsInner = eventArgs.ItemBounds.SubItemBounds[subItem.Index].BoundsInner;
+                if (boundsInner.Width > 0 && boundsInner.Height > 0)
+                {
+                    BetterListViewExColumnType? columnType = ((BetterListViewExColumnHeader)Columns[subItem.Index])?.ColumnType;
+                    if (columnType.HasValue && columnType.GetValueOrDefault() == BetterListViewExColumnType.PercentDone && (boundsInner.Width > 4 && boundsInner.Height > 4) && subItem.Value is short)
+                    {
+                        int height = Math.Min(16, boundsInner.Height);
+                        Rectangle rectangle = new Rectangle(boundsInner.Left, boundsInner.Top + (boundsInner.Height - height >> 1), boundsInner.Width - 2, height);
+                        short num2 = (short)subItem.Value;
+                        if (ProgressBarRenderer.IsSupported)
+                        {
+                            Rectangle bounds = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, num2 * (rectangle.Width - 1) / num1, rectangle.Height - 2);
+                            ProgressBarRenderer.DrawHorizontalBar(graphics, rectangle);
+                            ProgressBarRenderer.DrawHorizontalChunks(graphics, bounds);
+                        }
+                        else
+                        {
+                            Rectangle rect = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, num2 * (rectangle.Width - 1) / num1, rectangle.Height - 1);
+                            graphics.FillRectangle(SystemBrushes.Window, rectangle);
+                            graphics.FillRectangle(SystemBrushes.Highlight, rect);
+                            graphics.DrawRectangle(SystemPens.Control, rectangle);
+                        }
+                    }
+                }
             }
-            else
-            {
-              Rectangle rect = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, (int) num2 * (rectangle.Width - 1) / num1, rectangle.Height - 1);
-              graphics.FillRectangle(SystemBrushes.Window, rectangle);
-              graphics.FillRectangle(SystemBrushes.Highlight, rect);
-              graphics.DrawRectangle(SystemPens.Control, rectangle);
-            }
-          }
         }
-      }
     }
-  }
 }
