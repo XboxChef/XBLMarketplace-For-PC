@@ -1,7 +1,4 @@
-﻿
-using System.Windows.Forms;
-
-namespace XBLMarketplace_For_PC.Forms
+﻿namespace XBLMarketplace_For_PC.Forms
 {
     partial class DisplayUrlBox
     {
@@ -114,7 +111,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.urldisplay_tb.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.urldisplay_tb.WordWrap = false;
             // 
-            // DisplayUrlBox
+            // DisplayURLBox
             // 
             this.AcceptButton = this.ok_btn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,10 +134,11 @@ namespace XBLMarketplace_For_PC.Forms
         }
 
         #endregion
-        private TableLayoutPanel tableLayoutPanel1;
-        private Button ok_btn;
-        private Button copytoclipboard_btn;
-        internal Label gameTitle_label;
-        internal TextBox urldisplay_tb;
+
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button ok_btn;
+        private System.Windows.Forms.Button copytoclipboard_btn;
+        internal System.Windows.Forms.Label gameTitle_label;
+        internal System.Windows.Forms.TextBox urldisplay_tb;
     }
 }

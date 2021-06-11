@@ -9,8 +9,15 @@ namespace XBLMarketplace_For_PC.Forms
         {
             InitializeComponent();
         }
-        private void copytoclipboard_btn_Click(object sender, EventArgs e) => Clipboard.SetText(urldisplay_tb.Text);
 
-        private void ok_btn_Click(object sender, EventArgs e) => Close();
+        private void copytoclipboard_btn_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(urldisplay_tb.Text);
+        }
+
+        private void ok_btn_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

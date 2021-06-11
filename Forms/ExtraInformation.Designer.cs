@@ -1,11 +1,4 @@
-﻿
-using ComponentOwl.BetterListView;
-using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-
-namespace XBLMarketplace_For_PC.Forms
+﻿namespace XBLMarketplace_For_PC.Forms
 {
     partial class ExtraInformation
     {
@@ -106,8 +99,8 @@ namespace XBLMarketplace_For_PC.Forms
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
-        private Button ok_btn;
-        internal BetterListView gamecapabilityview;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button ok_btn;
+        internal ComponentOwl.BetterListView.BetterListView gamecapabilityview;
     }
 }

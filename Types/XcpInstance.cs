@@ -1,69 +1,72 @@
-﻿using God2Iso;
-using God2Iso.Types;
-using JasonNS.EventArguments;
-using JasonNS.Exceptions;
-using JasonNS.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using XCPPackage;
+using God2Iso;
+using God2Iso.Types;
+using JasonNS.EventArguments;
+using JasonNS.Exceptions;
+using JasonNS.Types;
+using XCPpackage;
 
 namespace XBLMarketplace_For_PC.Types
 {
     public class XcpInstance : PackageBase, IDisposable
     {
-        private readonly bool _cleanup;
+        private bool _cleanup;
+
         private bool _fullextract;
         private List<FileInfo> _godfilelist;
+
         private GameOnDemand _godinstance;
-        private readonly XCPUnpack _unpackerInstance;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="xcpPath"></param>
-        /// <param name="outputFolder"></param>
-        /// <param name="start"></param>
-        /// <param name="cleanup"></param>
-        /// <param name="pb"></param>
+        private XcpUnpack _unpackerInstance; //Todo:Confirm this object properly manages memory internally (within XcpPackage.sln)
+
         public XcpInstance(string xcpPath, string outputFolder, bool start, bool cleanup, PackageBase pb) : base(pb)
         {
-            if (string.IsNullOrWhiteSpace(Title) || pb == null)
+            if (string.IsNullOrWhiteSpace(Title) || (pb == null))
             {
                 Title = Path.GetFileNameWithoutExtension(xcpPath);
+
                 Status = PackageStatus.Waiting;
             }
             InFile = xcpPath;
-            OutFolder = outputFolder + "\\" + Path.GetFileNameWithoutExtension(InFile);
-            OutFile = string.Empty;
+            OutFolder = outputFolder + @"\" + Path.GetFileNameWithoutExtension(InFile);
+            OutFile = null;
             _cleanup = cleanup;
-            _unpackerInstance = new XCPUnpack(InFile);
-            _unpackerInstance.UnpackAndSplitProgressChanged += new EventHandler<ProgressChangedEventArgs>(XcpInstance_UnpackAndSplitProgressChanged);
-            _unpackerInstance.UnpackProgressChanged += new EventHandler<ProgressChangedEventArgs>(XcpInstance_UnpackProgressChanged);
-            _unpackerInstance.SplitProgressChanged += new EventHandler<ProgressChangedEventArgs>(XcpInstance_SplitProgressChanged);
+            _unpackerInstance = new XcpUnpack(InFile);
+
+            _unpackerInstance.UnpackAndSplitProgressChanged += XcpInstance_UnpackAndSplitProgressChanged;
+
+            _unpackerInstance.UnpackProgressChanged += XcpInstance_UnpackProgressChanged;
+            
+            _unpackerInstance.SplitProgressChanged += XcpInstance_SplitProgressChanged;
+
             if (string.Compare(Path.GetExtension(InFile), ".xcp", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                if (!start)
-                    return;
-                FullExtract();
+                if (start)
+                {
+                    FullExtract();
+                }
             }
-            else if (string.Compare(Path.GetExtension(xcpPath), ".xup", StringComparison.OrdinalIgnoreCase) == 0)
+            else if (string.Compare(Path.GetExtension(InFile), ".xup", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                if (!start)
-                    return;
-                Split();
+                if (start)
+                {
+                    Split();
+                }
             }
             else
+            {
                 Error = new InvalidFileFormatException("File extension not Handled (Please Use *.xcp or *.xup)");
+            }
         }
 
-        public XcpInstance(string xcpPath, PackageBase pb, string outputFolder = null)
-          : this(xcpPath, outputFolder, false, pb)
+        public XcpInstance(string xcpPath, PackageBase pb, string outputFolder = null) : this(xcpPath, outputFolder, false, pb)
         {
+            
         }
 
-        public XcpInstance(string xcpPath, string outputFolder, bool start, PackageBase pb)
-          : this(xcpPath, outputFolder, start, false, pb)
+        public XcpInstance(string xcpPath, string outputFolder, bool start, PackageBase pb) : this(xcpPath, outputFolder, start, false,pb)
         {
         }
 
@@ -73,72 +76,73 @@ namespace XBLMarketplace_For_PC.Types
         {
             get
             {
-                if (_godfilelist == null)
-                    return null;
-                return _godinstance != null ? _godinstance : (_godinstance = new GameOnDemand(new Pirs(_godfilelist[0]), _godfilelist.Skip<FileInfo>(1), this));
+                if (_godfilelist == null) return null;
+                if (_godinstance != null) return _godinstance;
+                return _godinstance = new GameOnDemand(new Pirs(_godfilelist[0]), _godfilelist.Skip(1), this);
             }
         }
 
-        public void Dispose() => _unpackerInstance.Dispose();
+        public void Dispose()
+        {
+            _unpackerInstance.Dispose();
+        }
 
         public event EventHandler<ProgressChangedEventArgs> UnpackProgressChanged
         {
-            add => _unpackerInstance.UnpackProgressChanged += value;
-            remove => _unpackerInstance.UnpackProgressChanged -= value;
+            add { _unpackerInstance.UnpackProgressChanged += value; }
+            remove { _unpackerInstance.UnpackProgressChanged -= value; }
         }
 
         public event EventHandler<ProgressChangedEventArgs> UnpackAndSplitProgressChanged
         {
-            add => _unpackerInstance.UnpackAndSplitProgressChanged += value;
-            remove => _unpackerInstance.UnpackAndSplitProgressChanged -= value;
+            add { _unpackerInstance.UnpackAndSplitProgressChanged += value; }
+            remove { _unpackerInstance.UnpackAndSplitProgressChanged -= value; }
         }
 
         public event EventHandler<ProgressChangedEventArgs> SplitProgressChanged
         {
-            add => _unpackerInstance.SplitProgressChanged += value;
-            remove => _unpackerInstance.SplitProgressChanged -= value;
+            add { _unpackerInstance.SplitProgressChanged += value; }
+            remove { _unpackerInstance.SplitProgressChanged -= value; }
         }
 
         private event EventHandler XcpSplitCompleted
         {
-            add => _unpackerInstance.SplitCompleted += value;
-            remove => _unpackerInstance.SplitCompleted -= value;
+            add { _unpackerInstance.SplitCompleted += value; }
+            remove { _unpackerInstance.SplitCompleted -= value; }
         }
 
         private void XcpInstance_SplitProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (_fullextract)
-                return;
-            PackageProgress = (short)e.Progress;
+            if (!_fullextract)
+                PackageProgress = (short)e.Progress;
         }
 
         public event EventHandler UnpackCompleted
         {
-            add => _unpackerInstance.UnpackCompleted += value;
-            remove => _unpackerInstance.UnpackCompleted -= value;
+            add { _unpackerInstance.UnpackCompleted += value; }
+            remove { _unpackerInstance.UnpackCompleted -= value; }
         }
+
 
         private void XcpInstance_UnpackProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (_fullextract)
-                return;
+            if(!_fullextract)
             PackageProgress = (short)e.Progress;
         }
 
         public event EventHandler UnpackAndSplitComplete
         {
-            add => _unpackerInstance.UnpackAndSplitComplete += value;
-            remove => _unpackerInstance.UnpackAndSplitComplete -= value;
+            add { _unpackerInstance.UnpackAndSplitComplete += value; }
+            remove { _unpackerInstance.UnpackAndSplitComplete -= value; }
         }
 
-        private void XcpInstance_UnpackAndSplitProgressChanged(
-          object sender,
-          ProgressChangedEventArgs e)
+        private void XcpInstance_UnpackAndSplitProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (!_fullextract)
-                return;
-            PackageProgress = (short)e.Progress;
+            if (_fullextract)
+                PackageProgress = (short)e.Progress;
+            
         }
+
 
         public void FullExtract()
         {

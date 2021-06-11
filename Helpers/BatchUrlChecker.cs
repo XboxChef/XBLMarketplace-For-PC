@@ -1,15 +1,9 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.Helpers.BatchUrlChecker
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
-using JasonNS.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using JasonNS.Components;
 using XBLMarketplace_For_PC.Types;
 
 namespace XBLMarketplace_For_PC.Helpers
@@ -17,18 +11,11 @@ namespace XBLMarketplace_For_PC.Helpers
     public sealed class BatchUrlChecker : IDisposable
     {
         public ThreadedBindingList<MarketPlaceContent> _content;
-        private readonly SynchronizationContext _uithread;
-        private readonly BackgroundWorker bgw = new BackgroundWorker()
-        {
-            WorkerReportsProgress = true,
-            WorkerSupportsCancellation = true
-        };
+        private SynchronizationContext _uithread;
+        private BackgroundWorker bgw = new BackgroundWorker {WorkerReportsProgress = true, WorkerSupportsCancellation = true};
         public int NetworkDelay;
-        private bool disposedValue;
 
-        public BatchUrlChecker(
-          ThreadedBindingList<MarketPlaceContent> content,
-          SynchronizationContext uiThread)
+        public BatchUrlChecker(ThreadedBindingList<MarketPlaceContent> content, SynchronizationContext uiThread)
         {
             _content = content;
             _uithread = uiThread ?? SynchronizationContext.Current;
@@ -38,139 +25,248 @@ namespace XBLMarketplace_For_PC.Helpers
         }
 
         public void Abort() => bgw.CancelAsync();
-
         public void StartUrlCheck(bool recheck) => bgw.RunWorkerAsync(recheck);
 
+        /// <summary>
+        /// Event fires when StartUrlCheck() is called, before BatchHelper has processed
+        /// </summary>
         public event DoWorkEventHandler DoWorkStart;
 
+        /// <summary>
+        /// Event fires when StartUrlCheck() is called, after BatchHelper has processed
+        /// </summary>
         public event DoWorkEventHandler DoWorkEnd;
 
+        /// <summary>
+        /// Event fires when progress has changed, before BatchHelper has processed
+        /// </summary>
         public event ProgressChangedEventHandler ProgressChangedStart;
 
+        /// <summary>
+        /// Event fires when progress has changed, after BatchHelper has processed
+        /// </summary>
         public event ProgressChangedEventHandler ProgressChangedEnd;
 
+        /// <summary>
+        /// Event fires when internal worker is finished, before BatchHelper has processed
+        /// </summary>
         public event RunWorkerCompletedEventHandler CompletedStart;
 
+        /// <summary>
+        /// Event fires when internal worker is finished, after BatchHelper has processed
+        /// </summary>
         public event RunWorkerCompletedEventHandler CompletedEnd;
 
         private void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
-            DoWorkEventHandler doWorkStart = DoWorkStart;
-            if (doWorkStart != null)
-                doWorkStart(this, e);
-            StartBatchUrlCheck(_content, _uithread, e, (BackgroundWorker)sender);
-            DoWorkEventHandler doWorkEnd = DoWorkEnd;
-            if (doWorkEnd == null)
-                return;
-            doWorkEnd(this, e);
+            DoWorkStart?.Invoke(this,e);
+            StartBatchUrlCheck(_content, _uithread, e, (BackgroundWorker) sender);
+            DoWorkEnd?.Invoke(this, e);
         }
 
         private void bgw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            ProgressChangedEventHandler progressChangedStart = ProgressChangedStart;
-            if (progressChangedStart != null)
-                progressChangedStart(this, e);
-            ProgressChangedEventHandler progressChangedEnd = ProgressChangedEnd;
-            if (progressChangedEnd == null)
-                return;
-            progressChangedEnd(this, e);
+            ProgressChangedStart?.Invoke(this, e);
+            //nothing to do here
+            ProgressChangedEnd?.Invoke(this, e);
         }
 
         private void bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            RunWorkerCompletedEventHandler completedStart = CompletedStart;
-            if (completedStart != null)
-                completedStart(this, e);
-            if (bgw.CancellationPending)
-                bgw.ReportProgress(0);
-            RunWorkerCompletedEventHandler completedEnd = CompletedEnd;
-            if (completedEnd == null)
-                return;
-            completedEnd(this, e);
+            CompletedStart?.Invoke(this, e);
+            if(bgw.CancellationPending) bgw.ReportProgress(0);
+            //Probably Something to do here
+            CompletedEnd?.Invoke(this, e);
         }
 
-        private void StartBatchUrlCheck(
-          ThreadedBindingList<MarketPlaceContent> boundList,
-          SynchronizationContext threadToInvoke,
-          DoWorkEventArgs e,
-          BackgroundWorker worker)
+        private void StartBatchUrlCheck(ThreadedBindingList<MarketPlaceContent> boundList, SynchronizationContext threadToInvoke,DoWorkEventArgs e,BackgroundWorker worker)
         {
-            int percentProgress1 = 100;
+            int progressbarMax = 100;
             bgw.ReportProgress(0);
             if (NetworkDelay == 0)
             {
-                bgw.ReportProgress(percentProgress1);
+                bgw.ReportProgress(progressbarMax);
+                return;
             }
-            else
+            try
             {
-                try
-                {
-                    List<MarketPlaceContent> list = boundList.ToList<MarketPlaceContent>();
-                    foreach (MarketPlaceContent marketPlaceContent1 in list)
+                List<MarketPlaceContent> workingContent = boundList.ToList();
+
+                foreach (MarketPlaceContent oneContent in workingContent)
+                {//e.argument is ForceRecheck true/false
+                    int DelayModifier = 40;//todo Math Over here, Fill progress bar with correct value
+                    int Delay = 1000 / DelayModifier;
+                    decimal InnerCount;
+                    decimal OuterCount = workingContent.IndexOf(oneContent) + 1;
+                    int InnerTotal= DelayModifier * Delay * NetworkDelay;
+                    int OuterTotal = workingContent.Count;
+                    int ProgressPercent = (int)Math.Ceiling(OuterCount / OuterTotal * progressbarMax);
+                    
+
+
+
+
+
+
+                    if (worker.CancellationPending && !(bool) e.Argument) break;
+                    if (!oneContent.DownloadChecked || (bool) e.Argument)
                     {
-                        int num1 = 40;
-                        int millisecondsTimeout = 1000 / num1;
-                        Decimal num2 = list.IndexOf(marketPlaceContent1) + 1;
-                        int num3 = num1 * millisecondsTimeout * NetworkDelay;
-                        int count = list.Count;
-                        int percentProgress2 = (int)Math.Ceiling(num2 / count * percentProgress1);
-                        if (worker.CancellationPending && !(bool)e.Argument)
-                            break;
-                        if (!marketPlaceContent1.DownloadChecked || (bool)e.Argument)
+                        oneContent.CheckDownloadUrl(worker.CancellationPending, (bool) e.Argument);
+                    }
+                    else
+                    {
+                        bgw.ReportProgress(ProgressPercent);
+                        continue;
+                    }
+                    var elementAtOrDefault = boundList.ElementAtOrDefault(workingContent.IndexOf(oneContent));
+                    if (elementAtOrDefault != null && elementAtOrDefault.TitleId == oneContent.TitleId)
+                    {
+                        //boundList.RaiseListChangedEvents = false;
+                        boundList[workingContent.IndexOf(oneContent)] = oneContent;
+                        //boundList.RaiseListChangedEvents = true;
+                        //threadToInvoke.Post(delegate { boundList.ResetItem(boundList.IndexOf(oneContent)); }, null);
+
+                    }
+                    bgw.ReportProgress(ProgressPercent);
+                    //networkdelay * 10 * sleep = TotalDelay
+                    if (oneContent.DownloadChecked || (bool)e.Argument)
+                    {
+                        if (!(workingContent.IndexOf(oneContent) >= workingContent.Count)) //Skip the Delay
                         {
-                            marketPlaceContent1.CheckDownloadUrl(worker.CancellationPending, (bool)e.Argument);
-                            MarketPlaceContent marketPlaceContent2 = boundList.ElementAtOrDefault<MarketPlaceContent>(list.IndexOf(marketPlaceContent1));
-                            if (marketPlaceContent2 != null && marketPlaceContent2.TitleId == marketPlaceContent1.TitleId)
-                                boundList[list.IndexOf(marketPlaceContent1)] = marketPlaceContent1;
-                            bgw.ReportProgress(percentProgress2);
-                            if (marketPlaceContent1.DownloadChecked || (bool)e.Argument)
+                            //NetworkDelay is Delay as Int Value in Seconds
+                            for (int i = 0; i < NetworkDelay*DelayModifier; i++)
                             {
-                                if (list.IndexOf(marketPlaceContent1) < list.Count)
-                                {
-                                    for (int index = 0; index < NetworkDelay * num1; ++index)
-                                    {
-                                        bgw.ReportProgress((int)Math.Ceiling((millisecondsTimeout * index + num2 * num3) / (num3 * (count + 1)) * percentProgress1));
-                                        if (!worker.CancellationPending)
-                                            Thread.Sleep(millisecondsTimeout);
-                                        else
-                                            break;
-                                    }
-                                    if (worker.CancellationPending)
-                                        break;
-                                }
-                                else
-                                {
-                                    int num4 = (int)Math.Ceiling((num2 + 1 / count) * percentProgress1);
-                                }
+                                InnerCount = Delay*i;
+
+                                ProgressPercent = (int) Math.Ceiling((InnerCount + OuterCount*InnerTotal)/(InnerTotal*(OuterTotal + 1))*progressbarMax);
+
+
+                                bgw.ReportProgress(ProgressPercent);
+                                if (worker.CancellationPending) break;
+                                Thread.Sleep(Delay);
                             }
+                            if (worker.CancellationPending) break;
                         }
-                        else
-                            bgw.ReportProgress(percentProgress2);
+                        else ProgressPercent = (int)Math.Ceiling((OuterCount+1 / OuterTotal) * progressbarMax);
                     }
                 }
-                catch (InvalidOperationException)
-                {
-                    boundList.ResetBindings();
-                    Console.WriteLine(e.ToString());
-                    throw;
-                }
+                    
+            }
+            catch (InvalidOperationException ex)
+            {
+                boundList.ResetBindings();
+                //Do Nothing Here, This Exception Is Intentional
+                //And is Caused by allcontent being changed from user switching the page they are viewing
+                Console.WriteLine(e.ToString());
+                throw;
             }
         }
+
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
 
         private void Dispose(bool disposing)
         {
-            if (disposedValue)
-                return;
-            if (disposing)
+            if (!disposedValue)
             {
-                bgw.DoWork -= new DoWorkEventHandler(bgw_DoWork);
-                bgw.ProgressChanged -= new ProgressChangedEventHandler(bgw_ProgressChanged);
-                bgw.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(bgw_RunWorkerCompleted);
-                bgw.Dispose();
+                if (disposing)
+                {
+                    bgw.DoWork -= bgw_DoWork;
+                    bgw.ProgressChanged -= bgw_ProgressChanged;
+                    bgw.RunWorkerCompleted -= bgw_RunWorkerCompleted;
+                    bgw.Dispose();
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
             }
-            disposedValue = true;
         }
 
-        public void Dispose() => Dispose(true);
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~batchworker() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
+/*    public class BatchHelper
+    {
+        public int NetworkDelay;
+        public void Abort() => _cts.Cancel();
+        public bool WorkDone { get; private set; } = true;
+        private CancellationTokenSource _cts= new CancellationTokenSource();
+        public bool Recheck;
+        public ThreadedBindingList<MarketPlaceContent> Content;
+        private SynchronizationContext _uithread;
+
+        public BatchHelper(ThreadedBindingList<MarketPlaceContent> content, SynchronizationContext uiThread)
+        {
+            Content = content;
+            _uithread = uiThread ?? SynchronizationContext.Current;
+        }
+        public async void StartBatchUrlCheck()
+        {
+            if (!_cts.IsCancellationRequested) _cts.Cancel();
+            _cts = new CancellationTokenSource();
+            WorkDone = false;
+            await Task.Run(async () =>
+            {
+                WorkDone = await StartBatchUrlCheck(Content, _uithread);
+            });
+            
+        }
+        private async Task<bool> StartBatchUrlCheck(ThreadedBindingList<MarketPlaceContent> boundList, SynchronizationContext threadToInvoke)
+        {
+            if (NetworkDelay == 0) return true;
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    List<MarketPlaceContent> workingContent = boundList.ToList();
+                    foreach (MarketPlaceContent oneContent in workingContent)
+                    {
+                        if (_cts.IsCancellationRequested) break;
+                        if (oneContent.DownloadChecked && !Recheck) continue;
+                        await StartUrlCheck(oneContent, workingContent, boundList, threadToInvoke);
+                    }
+                });
+            }
+            catch (InvalidOperationException e)
+            {
+                boundList.ResetBindings();
+                //Do Nothing Here, This Exception Is Intentional
+                //And is Caused by allcontent being changed from user switching the page they are viewing
+                Console.WriteLine(e.ToString());
+            }
+            return true;
+        }
+        private async Task StartUrlCheck(MarketPlaceContent oneContent,List<MarketPlaceContent> workingList, ThreadedBindingList<MarketPlaceContent> boundList, SynchronizationContext threadToInvoke)
+        {    }
+        public void XmlDocLoaded_Subscribe(Webhelper caller)
+        {
+            caller.XmlDocLoaded += XmlDocChanged;
+        }
+        private void XmlDocChanged(object sender, EventArgs a)
+        {
+            //cts.Cancel();
+            Recheck = false;
+        }
+
+
+    }
+    */
 }

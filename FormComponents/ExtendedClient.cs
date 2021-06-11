@@ -1,60 +1,51 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.FormComponents.ExtendedClient
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace XBLMarketplace_For_PC.FormComponents
 {
-    internal class ExtendedClient : WebClient
+    class ExtendedClient : WebClient
     {
         private bool _supportsResume;
-        private bool checkedresume;
+        private bool checkedresume = false;
 
         public ExtendedClient(string useragent = null)
         {
-            if (useragent == null || Headers == null)
-                return;
-            Headers.Add("user-agent", useragent);
+            if (useragent != null)
+            {
+                if (Headers != null) Headers.Add("user-agent", useragent);
+            }
         }
 
         public bool HeadOnly { get; set; }
 
         protected override WebRequest GetWebRequest(Uri address)
         {
-            WebRequest webRequest = base.GetWebRequest(address);
-            if (HeadOnly && webRequest.Method == "GET")
-                webRequest.Method = "HEAD";
-            return webRequest;
+            WebRequest req = base.GetWebRequest(address);
+            if (HeadOnly && req.Method == "GET")
+            {
+                req.Method = "HEAD";
+            }
+            return req;
         }
 
         public async Task<bool> SupportsResume(string address)
         {
-            ExtendedClient extendedClient = this;
-            if (extendedClient.checkedresume)
-                return extendedClient._supportsResume;
-            extendedClient.HeadOnly = true;
-            if (extendedClient.ResponseHeaders == null)
+            if (checkedresume) return _supportsResume;
+            HeadOnly = true;
+            if (ResponseHeaders == null) await DownloadStringTaskAsync(address);
+            if (ResponseHeaders?.Get("Accept-Ranges") != null)
             {
-                string str = await extendedClient.DownloadStringTaskAsync(address);
+                _supportsResume = true;
             }
-            switch (extendedClient.ResponseHeaders?.Get("Accept-Ranges"))
-            {
-                case null:
-                    extendedClient.checkedresume = true;
-                    return extendedClient._supportsResume;
-                default:
-                    extendedClient._supportsResume = true;
-                    goto case null;
-            }
+            checkedresume = true;
+            return _supportsResume;
         }
 
-        internal void DownloadStringAsync(string address, bool isCanceled) => DownloadStringAsync(new Uri(address), isCanceled);
+        internal void DownloadStringAsync(string address, bool isCanceled)
+        {DownloadStringAsync(new Uri(address), isCanceled);}
 
-        internal void DownloadStringAsync(string address) => DownloadStringAsync(new Uri(address));
+        internal void DownloadStringAsync(string address)
+        { DownloadStringAsync(new Uri(address)); }
     }
 }

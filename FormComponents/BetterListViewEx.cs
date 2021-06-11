@@ -1,54 +1,57 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.FormComponents.BetterListViewEx
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
-using ComponentOwl.BetterListView;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using ComponentOwl.BetterListView;
 
 namespace XBLMarketplace_For_PC.FormComponents
 {
-    public class BetterListViewEx : ComponentOwl.BetterListView.BetterListView
+    public class BetterListViewEx : BetterListView
     {
+        //public new List<BetterListViewExColumnHeader> Columns = new List<BetterListViewExColumnHeader>();
+
         protected override void OnDrawItem(BetterListViewDrawItemEventArgs eventArgs)
         {
-            this.BackColor = Color.FromArgb(25, 25, 25);
-            this.ForeColorColumns = Color.Black;
-            ForeColor = Color.White;
-            int num1 = 100;
+            int percentOutOf = 100;
             base.OnDrawItem(eventArgs);
             if (View != BetterListViewView.Details)
-                return;
-            Graphics graphics = eventArgs.Graphics;
-            foreach (BetterListViewSubItem subItem in eventArgs.Item.SubItems)
             {
-                if (subItem.Index >= Columns.Count)
-                    break;
-                Rectangle boundsInner = eventArgs.ItemBounds.SubItemBounds[subItem.Index].BoundsInner;
-                if (boundsInner.Width > 0 && boundsInner.Height > 0)
+                return;
+            }
+            Graphics graphics = eventArgs.Graphics;
+            foreach (BetterListViewSubItem current in eventArgs.Item.SubItems)
+            {
+                if (current.Index >= base.Columns.Count)
                 {
-                    BetterListViewExColumnType? columnType = ((BetterListViewExColumnHeader)Columns[subItem.Index])?.ColumnType;
-                    if (columnType.HasValue && columnType.GetValueOrDefault() == BetterListViewExColumnType.PercentDone && (boundsInner.Width > 4 && boundsInner.Height > 4) && subItem.Value is short)
+                    break;
+                }
+                Rectangle boundsInner = eventArgs.ItemBounds.SubItemBounds[current.Index].BoundsInner;
+                if ((boundsInner.Width > 0) && (boundsInner.Height > 0))
+                {
+                    BetterListViewExColumnHeader blvExColumnHeader = (BetterListViewExColumnHeader) Columns[current.Index];
+                    switch (blvExColumnHeader?.ColumnType)
                     {
-                        int height = Math.Min(16, boundsInner.Height);
-                        Rectangle rectangle = new Rectangle(boundsInner.Left, boundsInner.Top + (boundsInner.Height - height >> 1), boundsInner.Width - 2, height);
-                        short num2 = (short)subItem.Value;
-                        if (ProgressBarRenderer.IsSupported)
-                        {
-                            Rectangle bounds = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, num2 * (rectangle.Width - 1) / num1, rectangle.Height - 2);
-                            ProgressBarRenderer.DrawHorizontalBar(graphics, rectangle);
-                            ProgressBarRenderer.DrawHorizontalChunks(graphics, bounds);
-                        }
-                        else
-                        {
-                            Rectangle rect = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, num2 * (rectangle.Width - 1) / num1, rectangle.Height - 1);
-                            graphics.FillRectangle(SystemBrushes.Window, rectangle);
-                            graphics.FillRectangle(SystemBrushes.Highlight, rect);
-                            graphics.DrawRectangle(SystemPens.Control, rectangle);
-                        }
+                        
+                        case BetterListViewExColumnType.PercentDone:
+                            if ((boundsInner.Width > 4) && (boundsInner.Height > 4) && current.Value is short)
+                            {
+                                int num3 = Math.Min(16, boundsInner.Height);
+                                Rectangle rectangle = new Rectangle(boundsInner.Left, boundsInner.Top + ((boundsInner.Height - num3) >> 1), boundsInner.Width - 2, num3);
+                                short num4 = (short)current.Value;
+                                if (ProgressBarRenderer.IsSupported)
+                                {
+                                    Rectangle bounds = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, (int)num4 * (rectangle.Width - 1) / percentOutOf, rectangle.Height - 2);
+                                    ProgressBarRenderer.DrawHorizontalBar(graphics, rectangle);
+                                    ProgressBarRenderer.DrawHorizontalChunks(graphics, bounds);
+                                }
+                                else
+                                {
+                                    Rectangle rect3 = new Rectangle(rectangle.Left + 1, rectangle.Top + 1, (int)num4 * (rectangle.Width - 1) / percentOutOf, rectangle.Height - 1);
+                                    graphics.FillRectangle(SystemBrushes.Window, rectangle);
+                                    graphics.FillRectangle(SystemBrushes.Highlight, rect3);
+                                    graphics.DrawRectangle(SystemPens.Control, rectangle);
+                                }
+                            }
+                            break;
                     }
                 }
             }

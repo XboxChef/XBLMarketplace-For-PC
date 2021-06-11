@@ -1,35 +1,20 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.FormComponents.BetterListViewExColumnHeader
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
 using ComponentOwl.BetterListView;
 
 namespace XBLMarketplace_For_PC.FormComponents
 {
     public class BetterListViewExColumnHeader : BetterListViewColumnHeader
     {
-        private BetterListViewExColumnType columnType;
+        private BetterListViewExColumnType columnType = BetterListViewExColumnType.Default;
 
-        public BetterListViewExColumnHeader(
-          BetterListViewExColumnType columnType,
-          string text,
-          int width)
-          : base(text, width)
+        public BetterListViewExColumnHeader(BetterListViewExColumnType columnType, string text, int width) : base(text, width)
         {
-            ColumnType = columnType;
-            Style = BetterListViewColumnHeaderStyle.Sortable;
+            this.ColumnType = columnType;
+            base.Style = BetterListViewColumnHeaderStyle.Sortable;
         }
 
         public BetterListViewExColumnHeader()
-        {
-        }
+        {}
 
-        public BetterListViewExColumnType ColumnType
-        {
-            get => columnType;
-            set => columnType = value;
-        }
+        public BetterListViewExColumnType ColumnType { get { return columnType; } set { columnType = value; }}
     }
 }

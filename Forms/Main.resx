@@ -120,13 +120,16 @@
   <metadata name="WebWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="defaultLookAndFeel1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>250, 17</value>
   </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>25</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Main.IconOptions.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        AAABAAEAtY0AAAAAGAAAOQEAFgAAACgAAAC1AAAAGgEAAAEAGAAAAAAAAAAAAEgAAABIAAAAAAAAAAAA
+        AAABAAEAtY0AAAEAGAAAOQEAFgAAACgAAAC1AAAAGgEAAAEAGAAAAAAAAAAAAEgAAABIAAAAAAAAAAAA
         AAAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAP
         fBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAP
         fBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAPfBAP

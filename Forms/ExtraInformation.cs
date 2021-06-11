@@ -9,6 +9,10 @@ namespace XBLMarketplace_For_PC.Forms
         {
             InitializeComponent();
         }
-        private void ok_btn_Click(object sender, EventArgs e) => Close();
+
+        private void ok_btn_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

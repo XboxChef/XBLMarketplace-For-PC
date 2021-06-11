@@ -1,9 +1,3 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.Helpers.CatalogueAssist
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -20,25 +14,26 @@ namespace XBLMarketplace_For_PC.Helpers
 {
     public class CatalogueAssist
     {
-        private readonly string _bodytypes = "1.3";
-        private readonly UriBuilder _catalogueUri;
-        private readonly string _detailview = "detaillevel5";
-        private readonly string _offerfilter = "1";
-        private readonly string _pagenum = "1";
-        private readonly string _pagesize = "1";
-        private readonly NameValueCollection _parameters = HttpUtility.ParseQueryString(string.Empty);
-        private readonly string _producttypes = "1.5.18.19.20.21.22.23.30.34.37.46.47.61";
-        private readonly string _stores = "1";
-        private readonly string _tiers = "2.3";
-        private readonly string _userAgent = "Xbox Live Client/2.0.15574.0";
+        private string _bodytypes = Constants.NetworkConnectivity.Bodytypes;
+        private UriBuilder _catalogueUri;
+        private string _detailview = Constants.NetworkConnectivity.Detailview;
+        private string _offerfilter = Constants.NetworkConnectivity.Offerfilter;
+        private string _pagenum = Constants.NetworkConnectivity.Pagenum;
+        private string _pagesize = Constants.NetworkConnectivity.Pagesize;
+        private NameValueCollection _parameters = HttpUtility.ParseQueryString(string.Empty);
+        private string _producttypes = Constants.NetworkConnectivity.Producttypes;
+        private string _stores = Constants.NetworkConnectivity.Stores;
+        private string _tiers = Constants.NetworkConnectivity.Tiers;
+        private string _userAgent = Constants.NetworkConnectivity.Useragent;
+
         public Language Currentlang;
         public DownloadAssist Download = new DownloadAssist();
 
         public CatalogueAssist(Language currentlang, string productId)
         {
-            Currentlang = currentlang;
+            this.Currentlang = currentlang;
             Download.FileCache.ProductId = productId;
-            _parameters.Add("bodytypes", _bodytypes);
+            _parameters.Add("bodytypes",_bodytypes);
             _parameters.Add("detailview", _detailview);
             _parameters.Add("pagenum", _pagenum);
             _parameters.Add("pagesize", _pagesize);
@@ -49,7 +44,7 @@ namespace XBLMarketplace_For_PC.Helpers
             _catalogueUri = new UriBuilder()
             {
                 Scheme = "http",
-                Host = "marketplace-xb.xboxlive.com",
+                Host = Constants.NetworkConnectivity.CataHost,
                 Path = CataLocation,
                 Query = _parameters.ToString()
             };
@@ -57,83 +52,88 @@ namespace XBLMarketplace_For_PC.Helpers
 
         public string ProductId
         {
-            get => Download.FileCache.ProductId;
-            set => Download.FileCache.ProductId = value;
+            get { return Download.FileCache.ProductId; }
+            set { Download.FileCache.ProductId = value; }
         }
 
         public string CataLocation
         {
             get
             {
-                if (ProductId == null)
-                    throw new ArgumentNullException(ToString());
-                return "/marketplacecatalog/v1/product/" + Currentlang.Code + "/" + ProductId;
+                if (ProductId == null) throw new ArgumentNullException(ToString());
+                return Constants.NetworkConnectivity.CataLocation + Currentlang.Code + '/' + ProductId;
             }
         }
 
+        /// <summary>
+        ///     Returns XMLDoc Containing the ContentID
+        /// </summary>
         private XDocument DownloadCatalogueXDoc()
         {
             try
             {
-                HttpWebRequest httpWebRequest = WebRequest.Create(_catalogueUri.ToString()) as HttpWebRequest;
-                httpWebRequest.UserAgent = _userAgent;
-                StreamReader streamReader = new StreamReader((httpWebRequest.GetResponse() as HttpWebResponse).GetResponseStream());
-                string text = streamReader.ReadToEnd().Trim();
-                streamReader.Close();
-                return XDocument.Parse(text);
+                HttpWebRequest request = WebRequest.Create(_catalogueUri.ToString()) as HttpWebRequest;
+                request.UserAgent = _userAgent;
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+                StreamReader sr = new StreamReader(response.GetResponseStream());
+                string result = sr.ReadToEnd().Trim();
+                sr.Close();
+                var xmlDoc = XDocument.Parse(result);
+                return xmlDoc;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(e.ToString());
                 return null;
             }
         }
 
         private TitleIDs ParseproductInstance(XDocument node)
         {
-            TitleIDs titleIds = new TitleIDs();
-            XElement xelement1 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "hexTitleId").FirstOrDefault<XElement>();
-            if (xelement1 != null)
-                titleIds.HextitleId = xelement1.Value;
-            XElement xelement2 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "productInstanceId").FirstOrDefault<XElement>();
-            if (xelement2 != null)
-                titleIds.ProductInstanceId = xelement2.Value;
-            XElement xelement3 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "titleId").FirstOrDefault<XElement>();
-            if (xelement3 != null)
-                titleIds.Alttitleid = xelement3.Value;
-            XElement xelement4 = null;
-            foreach (XElement descendant in node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "offerInstance"))
+            //<productInstance> is Similiar to <Entry>
+            var retIds = new TitleIDs();
+            var firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "hexTitleId").FirstOrDefault();
+            if (firstOrDefault != null) retIds.HextitleId = firstOrDefault.Value;
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "productInstanceId").FirstOrDefault();
+            if (firstOrDefault != null) retIds.ProductInstanceId = firstOrDefault.Value;
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "titleId").FirstOrDefault();
+            if (firstOrDefault != null) retIds.Alttitleid = firstOrDefault.Value;
+            //todo:Change contentId to array and retrieve all Content for product
+            XElement previousContentId;
+                previousContentId = null;
+            foreach (XElement offers in node.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "offerInstance"))
             {
-                XElement xelement5 = descendant.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "contentId").FirstOrDefault<XElement>();
-                if (xelement5 != null && xelement4?.Value != xelement5.Value)
+                var contentIdElement = offers.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "contentId").FirstOrDefault();
+                if (contentIdElement != null)
                 {
-                    XElement xelement6 = descendant.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "tier").FirstOrDefault<XElement>();
-                    XElement xelement7 = descendant.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "price").FirstOrDefault<XElement>();
-                    XElement xelement8 = descendant.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "isAcquirable").FirstOrDefault<XElement>();
-                    titleIds.Offers.Add(new OfferEntry()
+                    if (previousContentId?.Value != contentIdElement.Value)
                     {
-                        Tier = xelement6?.Value,
-                        Price = xelement7?.Value,
-                        IsAcquirable = xelement8 != null && Convert.ToInt32(xelement8.Value) > 0,
-                        ContentId = xelement5.Value
-                    });
+                        var tierElement = offers.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "tier").FirstOrDefault();
+                        var priceElement = offers.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "price").FirstOrDefault();
+                        var acquirableElement = offers.Descendants(Constants.NetworkConnectivity.Namespaces.Market + "isAcquirable").FirstOrDefault();
+                        //var priceElement = offers.Descendants(Namespaces.Market + "price").FirstOrDefault();
+
+                        retIds.Offers.Add(new OfferEntry
+                        {
+                            Tier = tierElement?.Value,
+                            Price = priceElement?.Value,
+                            IsAcquirable = acquirableElement != null && (Convert.ToInt32(acquirableElement.Value) > 0),
+                            ContentId = contentIdElement.Value
+                        });
+                    }
                 }
-                xelement4 = xelement5;
+                previousContentId = contentIdElement;
             }
-            if (titleIds.Offers.Count <= 0)
-                titleIds.Offers = new List<OfferEntry>()
-        {
-          new OfferEntry()
-          {
-            Reason = "Unavailable",
-           
-            Urlchecked = true
-          }
-        };
-            return titleIds;
+            if (retIds.Offers.Count <= 0)
+            {
+                retIds.Offers = new List<OfferEntry> {new OfferEntry() {Reason = "NoContentID",Urlchecked = true}};
+            }
+
+            return retIds;
         }
 
-        public void InitializeUrl(bool force = false)
+        public void InitializeUrl(bool force=false)
         {
             if (!force)
             {
@@ -141,47 +141,42 @@ namespace XBLMarketplace_For_PC.Helpers
                 {
                     Download.FileCache.Load();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine(e.ToString());
                     throw;
                 }
             }
-            if (((!Download.FileCache.DataLoaded ? 1 : (!Download.FileCache.Urlchecked ? 1 : 0)) | (force ? 1 : 0)) == 0)
-                return;
-            TitleIDs titleIds = ParseproductInstance(DownloadCatalogueXDoc());
-            
-            Download.HexTitleId = titleIds.HextitleId;
-            Download.AltTitleId = titleIds.Alttitleid;
-            Download.ProductInstanceId = titleIds.ProductInstanceId;
-            Download.Offers = titleIds.Offers;
+            if(!Download.FileCache.DataLoaded || !Download.FileCache.Urlchecked || force) 
+            {TitleIDs tempIDs = ParseproductInstance(DownloadCatalogueXDoc());
+                Download.HexTitleId = tempIDs.HextitleId;
+                Download.AltTitleId = tempIDs.Alttitleid;
+                Download.ProductInstanceId = tempIDs.ProductInstanceId;
+                Download.Offers = tempIDs.Offers;
+            }
         }
 
         public void CheckDownloadUrl(bool isCanceled, bool force = false)
         {
-            if (Download.FileCache.DataLoaded && !force && Download.FileCache.Urlchecked || isCanceled)
-                return;
+            if (Download.FileCache.DataLoaded && !force && Download.FileCache.Urlchecked) return;
+            if (isCanceled) return;
             InitializeUrl(force);
-            using (ExtendedClient extendedClient = new ExtendedClient()
-            {
-                HeadOnly = true
-            })
+
+            using (ExtendedClient exist = new ExtendedClient {HeadOnly = true})
             {
                 try
                 {
-                    int num = Download.FullDownloadUrl == null ? 1 : 0;
-                    if (num == 0)
-                        extendedClient.DownloadStringAsync(Download.FullDownloadUrl, isCanceled);
+                    bool fduNull = Download.FullDownloadUrl == null;
+                    if (!fduNull) exist.DownloadStringAsync(Download.FullDownloadUrl, isCanceled);
                     Download.FileCache.DownloadUrl = Download.FullDownloadUrl;
                     Download.FileCache.ProductId = ProductId;
                     Download.FileCache.Urlchecked = true;
-                    if (num == 0)
-                        Download.FileCache.Reason = "True";
+                    if (!fduNull) Download.FileCache.Reason = "True";
                     Download.FileCache.Save();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine(e.ToString());
                     Download.FileCache.DownloadUrl = Download.FullDownloadUrl;
                     Download.FileCache.ProductId = ProductId;
                     Download.FileCache.Urlchecked = true;
@@ -190,7 +185,7 @@ namespace XBLMarketplace_For_PC.Helpers
                 }
                 finally
                 {
-                    extendedClient.Dispose();
+                    exist.Dispose();
                 }
             }
         }

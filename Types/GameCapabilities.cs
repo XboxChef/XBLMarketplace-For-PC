@@ -1,9 +1,3 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.Types.GameCapabilities
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -15,248 +9,113 @@ namespace XBLMarketplace_For_PC.Types
     public class GameCapabilities : IDisposable
     {
         public BindingList<GameCapabilityEntry> GameCapabilityInfo = new BindingList<GameCapabilityEntry>();
-        private bool disposedValue;
 
         public GameCapabilities(XElement capabilityRaw)
         {
-            XElement xelement1 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCoopHardDriveRequired").SingleOrDefault<XElement>();
-            GameCapabilityEntry gameCapabilityEntry1;
-            if (xelement1 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Co-op Hard Drive Required",
-                    Value = xelement1.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement2 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineLeaderboards").SingleOrDefault<XElement>();
-            if (xelement2 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Leaderboards",
-                    Value = xelement2.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement3 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineContentDownload").SingleOrDefault<XElement>();
-            if (xelement3 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Content Download",
-                    Value = xelement3.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement4 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineDolbyDigital").SingleOrDefault<XElement>();
-            if (xelement4 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Dolby Digital",
-                    Value = xelement4.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement5 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCustomSoundtracks").SingleOrDefault<XElement>();
-            if (xelement5 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Custom Soundtracks",
-                    Value = xelement5.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement6 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlinePeripheralCamera").SingleOrDefault<XElement>();
-            if (xelement6 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Peripheral Camera",
-                    Value = xelement6.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement7 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineVoiceCommands").SingleOrDefault<XElement>();
-            if (xelement7 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Voice Commands",
-                    Value = xelement7.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement8 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineMaxHDTVModeId").SingleOrDefault<XElement>();
-            if (xelement8 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Max HDTV Mode ID?",
-                    Value = xelement8.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement9 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCoopPlayersMin").SingleOrDefault<XElement>();
-            if (xelement9 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Co-op Players Min",
-                    Value = xelement9.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement10 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCoopPlayersMax").SingleOrDefault<XElement>();
-            if (xelement10 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Co-op Players Max",
-                    Value = xelement10.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement11 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlinePlayersMax").SingleOrDefault<XElement>();
-            if (xelement11 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Players Max",
-                    Value = xelement11.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement12 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlinePlayersMin").SingleOrDefault<XElement>();
-            if (xelement12 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Offline Players Min",
-                    Value = xelement12.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement13 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineMultiplayerMin").SingleOrDefault<XElement>();
-            if (xelement13 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Multiplayer Min",
-                    Value = xelement13.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement14 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineMultiplayerMax").SingleOrDefault<XElement>();
-            if (xelement14 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Multiplayer Max",
-                    Value = xelement14.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement15 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineMultiplayerHardDriveRequired").SingleOrDefault<XElement>();
-            if (xelement15 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Multiplayer Hard Drive Required",
-                    Value = xelement15.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement16 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineCoopPlayersMin").SingleOrDefault<XElement>();
-            if (xelement16 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Co-op Players Min",
-                    Value = xelement16.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement17 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineCoopPlayersMax").SingleOrDefault<XElement>();
-            if (xelement17 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Co-op Players Max",
-                    Value = xelement17.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement18 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineCoopHardDriveRequired").SingleOrDefault<XElement>();
-            if (xelement18 != null)
-            {
-                BindingList<GameCapabilityEntry> gameCapabilityInfo = GameCapabilityInfo;
-                gameCapabilityEntry1 = new GameCapabilityEntry
-                {
-                    Id = "Online Co-op Hard Drive Required",
-                    Value = xelement18.Value
-                };
-                GameCapabilityEntry gameCapabilityEntry2 = gameCapabilityEntry1;
-                gameCapabilityInfo.Add(gameCapabilityEntry2);
-            }
-            XElement xelement19 = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineHardDriveRequired").SingleOrDefault<XElement>();
-            if (xelement19 == null)
-                return;
-            BindingList<GameCapabilityEntry> gameCapabilityInfo1 = GameCapabilityInfo;
-            gameCapabilityEntry1 = new GameCapabilityEntry
-            {
-                Id = "Online Hard Drive Required",
-                Value = xelement19.Value
-            };
-            GameCapabilityEntry gameCapabilityEntry3 = gameCapabilityEntry1;
-            gameCapabilityInfo1.Add(gameCapabilityEntry3);
+
+            var singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCoopHardDriveRequired").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Co-op Hard Drive Required", Value = singleOrDefault.Value });
+
+
+            /*todo:Add Below GameCapabilityEntry's
+
+            */
+
+            /*Already Added
+            offlineDolbyDigital
+            onlineContentDownload
+            onlineLeaderboards
+            offlineCustomSoundtracks
+            offlinePeripheralCamera
+            offlineVoiceCommands
+            offlineMaxHDTVModeId
+            offlineCoopPlayersMax
+            offlineCoopPlayersMin
+            offlinePlayersMax
+            offlinePlayersMin
+            offlineCoopHardDriveRequired
+            onlineMultiplayerMin
+            onlineMultiplayerMax
+            onlineMultiplayerHardDriveRequired
+            onlineCoopPlayersMin
+            onlineCoopPlayersMax
+            onlineCoopHardDriveRequired
+            onlineHardDriveRequired
+            */
+
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineLeaderboards").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Leaderboards", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineContentDownload").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Content Download", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineDolbyDigital").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Dolby Digital", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCustomSoundtracks").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Custom Soundtracks", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlinePeripheralCamera").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Peripheral Camera", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineVoiceCommands").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Voice Commands", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineMaxHDTVModeId").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Max HDTV Mode ID?", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCoopPlayersMin").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Co-op Players Min", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlineCoopPlayersMax").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Co-op Players Max", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlinePlayersMax").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Players Max", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "offlinePlayersMin").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Offline Players Min", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineMultiplayerMin").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Multiplayer Min", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineMultiplayerMax").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Multiplayer Max", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineMultiplayerHardDriveRequired").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Multiplayer Hard Drive Required", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineCoopPlayersMin").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Co-op Players Min", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineCoopPlayersMax").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Co-op Players Max", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineCoopHardDriveRequired").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Co-op Hard Drive Required", Value = singleOrDefault.Value });
+            singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineHardDriveRequired").SingleOrDefault();
+            if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Hard Drive Required", Value = singleOrDefault.Value });
         }
+
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposedValue)
-                return;
-            int num = disposing ? 1 : 0;
-            disposedValue = true;
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
         }
 
-        public void Dispose() => Dispose(true);
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~GameCapabilities() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

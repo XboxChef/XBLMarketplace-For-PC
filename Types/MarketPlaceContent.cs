@@ -1,11 +1,3 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.Types.MarketPlaceContent
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
-using JasonNS.GenericFunctions;
-using JasonNS.Types;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -16,6 +8,8 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using JasonNS.GenericFunctions;
+using JasonNS.Types;
 using XBLMarketplace_For_PC.Helpers;
 using XBLMarketplace_For_PC.SaveAndLoad;
 using XBLMarketplace_For_PC.Structs;
@@ -28,108 +22,144 @@ namespace XBLMarketplace_For_PC.Types
         public readonly GameCapabilities Capabilities;
         public readonly string Thumburl;
         private Image _thumb;
+
         public CancellationTokenSource Tokensource;
 
-        public MarketPlaceContent(XElement node, Language lang)
-          : base()
+        public MarketPlaceContent(XElement node,Language lang)
         {
-            XElement xelement1 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameTitleMediaId").FirstOrDefault<XElement>();
-            if (xelement1 != null)
-                _catalogue = new CatalogueAssist(lang, xelement1.Value.Remove(0, 9));
-            XElement xelement2 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "reducedDescription").FirstOrDefault<XElement>() ?? node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "description").FirstOrDefault<XElement>();
-            Description = xelement2 == null ? "undefined" : xelement2.Value;
-            XElement xelement3 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "titleId").FirstOrDefault<XElement>() ?? node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "effectiveTitleId").FirstOrDefault<XElement>();
-            TitleId = xelement3 == null ? "Undefined" : xelement3.Value;
-            XElement xelement4 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "publisher").FirstOrDefault<XElement>();
-            Publisher = xelement4 == null ? "Undefined" : xelement4.Value;
-            XElement xelement5 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "developer").FirstOrDefault<XElement>();
-            Developer = xelement5 == null ? "Undefined" : xelement5.Value;
-            XElement xelement6 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "releaseDate").FirstOrDefault<XElement>() ?? node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "availabilityDate").FirstOrDefault<XElement>();
-            Releasedate = xelement6 == null ? DateTime.MinValue : Convert.ToDateTime(xelement6.Value);
-            XElement xelement7 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "reducedTitle").FirstOrDefault<XElement>() ?? node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameReducedTitle").FirstOrDefault<XElement>();
-            if (xelement7 != null)
-                Title = xelement7.Value;
-            else
-                Description = "Undefined";
-            XElement xelement8 = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "fileUrl").FirstOrDefault<XElement>();
-            Thumburl = xelement8 == null ? null : xelement8.Value;
-            _catalogue.ProductId = (node.Descendants(Constants.NetworkConnectivity.Namespaces.Atom + "id").FirstOrDefault<XElement>() ?? throw new NullReferenceException()).Value.Substring(9);
-            if (node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameCapabilities").FirstOrDefault<XElement>() == null)
-                return;
-            Capabilities = new GameCapabilities(node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameCapabilities").FirstOrDefault<XElement>());
+            var firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameTitleMediaId").FirstOrDefault();
+            if (firstOrDefault != null) _catalogue = new CatalogueAssist(lang, firstOrDefault.Value.Remove(0,9));
+
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "reducedDescription").FirstOrDefault();
+            if (firstOrDefault == null) firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "description").FirstOrDefault();
+            if (firstOrDefault != null) Description = firstOrDefault.Value;
+            else Description = "undefined";
+
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "titleId").FirstOrDefault();
+            if (firstOrDefault == null) firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "effectiveTitleId").FirstOrDefault();
+            if (firstOrDefault != null) TitleId = firstOrDefault.Value;
+            else TitleId = "Undefined";
+
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "publisher").FirstOrDefault();
+            if (firstOrDefault != null) Publisher = firstOrDefault.Value;
+            else Publisher = "Undefined";
+
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "developer").FirstOrDefault();
+            if (firstOrDefault != null) Developer = firstOrDefault.Value;
+            else Developer = "Undefined";
+
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "releaseDate").FirstOrDefault();
+            if (firstOrDefault == null) firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "availabilityDate").FirstOrDefault();
+            if (firstOrDefault != null) Releasedate = Convert.ToDateTime(firstOrDefault.Value);
+            else Releasedate = DateTime.MinValue;
+
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "reducedTitle").FirstOrDefault();
+            if (firstOrDefault == null) firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameReducedTitle").FirstOrDefault();
+            if (firstOrDefault != null) Title = firstOrDefault.Value;
+            else Description = "Undefined";
+            
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "fileUrl").FirstOrDefault();
+            if (firstOrDefault != null) Thumburl = firstOrDefault.Value;
+            else Thumburl = null;
+
+            //Required
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Atom + "id").FirstOrDefault();
+            if (firstOrDefault == null) throw new NullReferenceException();
+            _catalogue.ProductId = firstOrDefault.Value.Substring(9);
+
+            if (node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameCapabilities").FirstOrDefault()!=null)
+                Capabilities = new GameCapabilities(node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameCapabilities").FirstOrDefault());
         }
 
         public string CanDownload => _catalogue.Download.FileCache.Reason;
-
         public bool DownloadChecked => _catalogue.Download.FileCache.Urlchecked;
-
         public string DownloadUrl => _catalogue.Download.FileCache.DownloadUrl;
-
         public string Description { get; private set; }
-
         public string TitleId { get; private set; }
-
         public string Publisher { get; private set; }
-
         public string Developer { get; private set; }
-
         public DateTime Releasedate { get; private set; }
 
         public Image Thumb
         {
-            get => _thumb != null ? _thumb : null;
-            private set => _thumb = value;
+            get 
+            {
+                if (_thumb != null)
+                {
+                    return _thumb;
+                    //If Image Already Downloaded
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            private set { _thumb = value; }
         }
 
         private SaveLoadData SingleDataCache => _catalogue.Download.FileCache;
 
-        public string OffersCount => _catalogue.Download.FileCache.Offercount != 0 ? Convert.ToString(_catalogue.Download.FileCache.Offercount) : "None";
+        public string OffersCount
+        {
+            get
+            {
+                return _catalogue.Download.FileCache.Offercount == 0 ? "None" : Convert.ToString(_catalogue.Download.FileCache.Offercount);
+            }
+        }
+
 
         public async Task<Image> InitImageAsync(string url)
         {
-            MarketPlaceContent marketPlaceContent = this;
-            string cacheLocation = Constants.Envpath + "\\BannerCache\\" + marketPlaceContent.Title.MakeFileSystemSafe() + ".banner";
-            if (!Directory.Exists(Constants.Envpath + "\\BannerCache\\"))
-                Directory.CreateDirectory(Constants.Envpath + "\\BannerCache\\");
-            marketPlaceContent.Tokensource = new CancellationTokenSource();
-            TaskCompletionSource<Image> tcs = new TaskCompletionSource<Image>();
-            if (System.IO.File.Exists(cacheLocation))
+            string cacheLocation = Constants.Envpath + "\\BannerCache\\" + Title.MakeFileSystemSafe() + ".banner";
+            if(!Directory.Exists(Constants.Envpath + "\\BannerCache\\"))
             {
-                marketPlaceContent._thumb = Image.FromFile(cacheLocation);
-                tcs.TrySetResult(marketPlaceContent._thumb);
-                return marketPlaceContent._thumb;
+                Directory.CreateDirectory(Constants.Envpath + "\\BannerCache\\");
+            }
+
+            Tokensource = new CancellationTokenSource();
+            var tcs = new TaskCompletionSource<Image>();
+            if (File.Exists(cacheLocation))
+            {
+                _thumb = Image.FromFile(cacheLocation);
+                tcs.TrySetResult(_thumb);
+                return _thumb;
             }
             Image webImage = null;
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.UserAgent = "Xbox Live Client/2.0.15574.0";
-            httpWebRequest.Method = "GET";
-            await Task.Factory.FromAsync<WebResponse>(new Func<AsyncCallback, object, IAsyncResult>(((WebRequest)httpWebRequest).BeginGetResponse), new Func<IAsyncResult, WebResponse>(((WebRequest)httpWebRequest).EndGetResponse), null).ContinueWith(task =>
-         {
-             HttpWebResponse result = (HttpWebResponse)task.Result;
-             Stream stream = result.GetResponseStream();
-             if (result.ContentEncoding.ToLower().Contains("gzip"))
-                 stream = new GZipStream(stream, CompressionMode.Decompress);
-             else if (result.ContentEncoding.ToLower().Contains("deflate"))
-                 stream = new DeflateStream(stream, CompressionMode.Decompress);
-             if (stream != null)
-                 webImage = Image.FromStream(stream);
-             tcs.TrySetResult(webImage);
-             result?.Dispose();
-             stream?.Dispose();
-         });
-            marketPlaceContent._thumb = tcs.Task.Result;
-            marketPlaceContent._thumb.Save(cacheLocation, ImageFormat.Jpeg);
-            if (marketPlaceContent.Tokensource.IsCancellationRequested)
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+            request.UserAgent = Constants.NetworkConnectivity.Useragent;
+            request.Method = "GET";
+            await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse,null)
+                .ContinueWith(task =>
+                {
+                    var webResponse = (HttpWebResponse) task.Result;
+                    Stream responseStream = webResponse.GetResponseStream();
+                    if (webResponse.ContentEncoding.ToLower().Contains("gzip"))
+                        responseStream = new GZipStream(responseStream, CompressionMode.Decompress);
+                    else if (webResponse.ContentEncoding.ToLower().Contains("deflate"))
+                        responseStream = new DeflateStream(responseStream, CompressionMode.Decompress);
+
+                    if (responseStream != null) webImage = Image.FromStream(responseStream);
+                    tcs.TrySetResult(webImage);
+                    webResponse?.Dispose();
+                    responseStream?.Dispose();
+                });
+            _thumb = tcs.Task.Result;
+            _thumb.Save(cacheLocation, ImageFormat.Jpeg);
+
+            if (Tokensource.IsCancellationRequested)
             {
-                marketPlaceContent.Tokensource.Dispose();
+                Tokensource.Dispose();
                 return null;
             }
-            marketPlaceContent.Tokensource.Dispose();
+            Tokensource.Dispose();
             return tcs.Task.Result;
         }
 
         public void CheckDownloadUrl(bool isCanceled, bool force = false) => _catalogue.CheckDownloadUrl(isCanceled, force);
 
-        public void Load() => SingleDataCache.Load();
+        public void Load()
+        {
+            SingleDataCache.Load();
+        }
     }
 }

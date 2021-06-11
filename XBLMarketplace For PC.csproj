@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ico32512.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BetterListViewExpress" />
@@ -52,12 +53,17 @@
     <Reference Include="DevExpress.XtraLayout.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraPrinting.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraRichEdit.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="dotnetzip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Desktop\New folder (2)\Lib\dotnetzip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.15.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetZip.1.15.0\lib\net40\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="God2Iso">
       <HintPath>lib\God2Iso.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.34.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>packages\HtmlAgilityPack.1.11.34\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.2.10, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>packages\SharpZipLib.1.3.2\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="JasonTool">
       <HintPath>lib\JasonTool.dll</HintPath>
@@ -81,46 +87,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsycnHelper.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Forms\ExtraInformation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ExtraInformation.Designer.cs">
-      <DependentUpon>ExtraInformation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\DisplayUrlBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DisplayUrlBox.Designer.cs">
-      <DependentUpon>DisplayUrlBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\Settings.cs" />
-    <Compile Include="Properties\Resources.cs" />
-    <Compile Include="SaveAndLoad\SaveLoadData.cs" />
-    <Compile Include="Structs\GameCapabilityEntry.cs" />
-    <Compile Include="Structs\Language.cs" />
-    <Compile Include="Structs\RegionId.cs" />
-    <Compile Include="Types\DownloadInstance.cs" />
-    <Compile Include="Types\IsoInstance.cs" />
-    <Compile Include="Types\DownloadStatus.cs" />
-    <Compile Include="Types\GameCapabilities.cs" />
-    <Compile Include="Types\MarketPlaceContent.cs" />
-    <Compile Include="Types\MediaId.cs" />
-    <Compile Include="Types\OfferEntry.cs" />
-    <Compile Include="Types\TitleIDs.cs" />
-    <Compile Include="Types\XcpInstance.cs" />
-    <Compile Include="Helpers\BatchUrlChecker.cs" />
-    <Compile Include="Helpers\CatalogueAssist.cs" />
-    <Compile Include="Helpers\DownloadAssist.cs" />
-    <Compile Include="Helpers\Webhelper.cs" />
-    <Compile Include="Forms\BindingStrings.cs" />
     <Compile Include="FormComponents\BetterListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -129,13 +97,101 @@
     <Compile Include="FormComponents\ExtendedClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XCPpackage\CreditDue.cs" />
-    <Compile Include="XCPpackage\XCPUnpack.cs" />
+    <Compile Include="Forms\BindingStrings.cs" />
+    <Compile Include="Forms\Converter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DisplayURLBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DisplayURLBox.Designer.cs">
+      <DependentUpon>DisplayURLBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Download.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExtraInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExtraInformation.Designer.cs">
+      <DependentUpon>ExtraInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Marketplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Helpers\BatchUrlChecker.cs" />
+    <Compile Include="Helpers\CatalogueAssist.cs" />
+    <Compile Include="Helpers\DM_EventSubscriber.cs" />
+    <Compile Include="Helpers\DownloadAssist.cs" />
+    <Compile Include="Helpers\Webhelper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs" />
+    <Compile Include="SaveAndLoad\SaveLoadData.cs" />
+    <Compile Include="SaveAndLoad\Settings.cs" />
+    <Compile Include="Structs\GameCapabilityEntry.cs" />
+    <Compile Include="Structs\Language.cs" />
+    <Compile Include="Structs\RegionID.cs" />
+    <Compile Include="Types\DownloadInstance.cs" />
+    <Compile Include="Types\DownloadStatus.cs" />
+    <Compile Include="Types\GameCapabilities.cs" />
+    <Compile Include="Types\MarketPlaceContent.cs" />
+    <Compile Include="Types\MediaID.cs" />
+    <Compile Include="Types\OfferEntry.cs" />
+    <Compile Include="Types\titleIDs.cs" />
+    <Compile Include="Types\XcpInstance.cs" />
+    <Compile Include="XcpUnpack.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\DisplayUrlBox.resx">
-      <DependentUpon>DisplayUrlBox.cs</DependentUpon>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\MarketPlaceContent.datasource" />
+    <None Include="Properties\Settings.settings" />
+    <None Include="Scripts\jquery-3.1.1.min.map" />
+    <None Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <None Include="Scripts\jquery-3.6.0.min.map" />
+    <None Include="Scripts\jquery-3.6.0.slim.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-3.6.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.6.0.js" />
+    <Content Include="Scripts\jquery-3.6.0.min.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
+    <Content Include="xboxmarketplace.ico" />
+    <Content Include="Resources\ae.png" />
+    <Content Include="Resources\de.png" />
+    <Content Include="Resources\es.png" />
+    <Content Include="Resources\fr.png" />
+    <Content Include="Resources\gr.png" />
+    <Content Include="Resources\it.png" />
+    <Content Include="Resources\jp.png" />
+    <Content Include="Resources\kr.png" />
+    <Content Include="Resources\nl.png" />
+    <Content Include="Resources\pl.png" />
+    <Content Include="Resources\pt.png" />
+    <Content Include="Resources\ru.png" />
+    <Content Include="Resources\se.png" />
+    <Content Include="Resources\tr.png" />
+    <Content Include="Resources\us.png" />
+    <Content Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\nugetexample.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\DisplayURLBox.resx">
+      <DependentUpon>DisplayURLBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ExtraInformation.resx">
       <DependentUpon>ExtraInformation.cs</DependentUpon>
@@ -143,15 +199,8 @@
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ico32512.ico" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
