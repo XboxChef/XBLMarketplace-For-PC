@@ -176,26 +176,266 @@ namespace XBLMarketplace_For_PC
         [StructLayout(LayoutKind.Sequential, Size = 1)]
         public struct QueryLanguage
         {
+            internal static readonly Language Polish = new Language()
+            {
+                Id = nameof(Polish),
+                Code = "pl-PL"
+            };
+            internal static readonly Language Portuguese = new Language()
+            {
+                Id = nameof(Portuguese),
+                Code = "pt-PT"
+            };
+            internal static readonly Language Russian = new Language()
+            {
+                Id = nameof(Russian),
+                Code = "ru-RU"
+            };
+            internal static readonly Language Arabic = new Language()
+            {
+                Id = nameof(Arabic),
+                Code = "ar-SA"
+            };
+            internal static readonly Language Arabic_UAE = new Language()
+            {
+                Id = nameof(Arabic_UAE),
+                Code = "ar-AE"
+            };
+            internal static readonly Language German_Switzerland = new Language()
+            {
+                Id = nameof(German_Switzerland),
+                Code = "de-CH"
+            };
+            internal static readonly Language English_SG = new Language()
+            {
+                Id = nameof(English_SG),
+                Code = "en-SG"
+            };
+            internal static readonly Language Slovak = new Language()
+            {
+                Id = nameof(Slovak),
+                Code = "sk-SK"
+            };
+            internal static readonly Language English_SA = new Language()
+            {
+                Id = nameof(English_SA),
+                Code = "en-ZA"
+            };
+            internal static readonly Language French_Switzerland = new Language()
+            {
+                Id = nameof(French_Switzerland),
+                Code = "fr-CH"
+            };
+            internal static readonly Language Finnish = new Language()
+            {
+                Id = nameof(Finnish),
+                Code = "fi-FI"
+            };
+            internal static readonly Language Swedish = new Language()
+            {
+                Id = nameof(Swedish),
+                Code = "sv-SE"
+            };
+            internal static readonly Language Taiwanese = new Language()
+            {
+                Id = nameof(Taiwanese),
+                Code = "zh-TW"
+            };
+            internal static readonly Language Turkish = new Language()
+            {
+                Id = nameof(Turkish),
+                Code = "tr-TR"
+            };
+
+            internal static readonly Language English_UK = new Language()
+            {
+                Id = nameof(English_UK),
+                Code = "en-GB"
+            };
             internal static readonly Language English = new Language()
             {
                 Id = nameof(English),
                 Code = "en-US"
-            };
-            internal static readonly Language German = new Language()
-            {
-                Id = nameof(German),
-                Code = "de-DE"
             };
             internal static readonly Language Argentina = new Language()
             {
                 Id = nameof(Argentina),
                 Code = "es-AR"
             };
-            internal static readonly Language Australia = new Language()
+
+            internal static readonly Language English_AU = new Language()
             {
-                Id = nameof(Australia),
+                Id = nameof(English_AU),
                 Code = "en-AU"
             };
+
+            internal static readonly Language België = new Language()
+            {
+                Id = nameof(België),
+                Code = "nl-BE"
+            };
+
+            internal static readonly Language Belgique = new Language()
+            {
+                Id = nameof(Belgique),
+                Code = "fr-BE"
+            };
+
+            internal static readonly Language Brasilian = new Language()
+            {
+                Id = nameof(Brasilian),
+                Code = "pt-BR"
+            };
+
+            internal static readonly Language English_CA = new Language()
+            {
+                Id = nameof(English_CA),
+                Code = "en-CA"
+            };
+
+            internal static readonly Language French_CA = new Language()
+            {
+                Id = nameof(French_CA),
+                Code = "fr-CA"
+            };
+
+            internal static readonly Language Czech = new Language()
+            {
+                Id = nameof(Czech),
+                Code = "cs-CZ"
+            };
+
+            internal static readonly Language Chilean = new Language()
+            {
+                Id = nameof(Chilean),
+                Code = "es-CL"
+            };
+
+            internal static readonly Language Chinese = new Language()
+            {
+                Id = nameof(Chinese),
+                Code = "zh-CN"
+            };
+
+            internal static readonly Language Colombian = new Language()
+            {
+                Id = nameof(Colombian),
+                Code = "es-CO"
+            };
+
+            internal static readonly Language Dutch = new Language()
+            {
+                Id = nameof(Dutch),
+                Code = "da-DK"
+            };
+
+            internal static readonly Language German = new Language()
+            {
+                Id = nameof(German),
+                Code = "de-DE"
+            };
+
+            static readonly Language Spanish_ES = new Language()
+            {
+                Id = nameof(Spanish_ES),//España
+                Code = "es-ES"
+            };
+
+            internal static readonly Language Greek = new Language()
+            {
+                Id = nameof(Greek),
+                Code = "el-GR"
+            };
+
+            internal static readonly Language French = new Language()
+            {
+                Id = nameof(French),
+                Code = "fr-FR"
+            };
+
+            internal static readonly Language Chinese_HK = new Language()
+            {
+                Id = nameof(Chinese_HK),
+                Code = "zh-HK"
+            };
+
+            internal static readonly Language English_HK = new Language()
+            {
+                Id = nameof(English_HK),
+                Code = "en-HK"
+            };
+
+            internal static readonly Language Indian = new Language()
+            {
+                Id = nameof(Indian),
+                Code = "en-IN"
+            };
+            internal static readonly Language Irish = new Language()
+            {
+                Id = nameof(Irish),
+                Code = "en-IE"
+            };
+
+            internal static readonly Language Israeli = new Language()
+            {
+                Id = nameof(Israeli),
+                Code = "he-IL"
+            };
+
+            internal static readonly Language Italian = new Language()
+            {
+                Id = nameof(Italian),
+                Code = "it-IT"
+            };
+
+            internal static readonly Language Japanese = new Language()
+            {
+                Id = nameof(Japanese),
+                Code = "ja-JP"
+            };
+
+            internal static readonly Language Korean = new Language()
+            {
+                Id = nameof(Korean),
+                Code = "ko-KR"
+            };
+
+            internal static readonly Language Magyarország = new Language()
+            {
+                Id = nameof(Magyarország),
+                Code = "hu-HU"
+            };
+
+            internal static readonly Language Spanish_MX = new Language()
+            {
+                Id = nameof(Spanish_MX),
+                Code = "es-MX"
+            };
+
+            internal static readonly Language Nederland = new Language()
+            {
+                Id = nameof(Nederland),
+                Code = "nl-NL"
+            };
+
+            internal static readonly Language New_Zealand = new Language()
+            {
+                Id = nameof(New_Zealand),
+                Code = "en-NZ"
+            };
+
+            internal static readonly Language Norge = new Language()
+            {
+                Id = nameof(Norge),
+                Code = "nb-NO"
+            };
+
+            internal static readonly Language Österreich = new Language()
+            {
+                Id = nameof(Österreich),
+                Code = "de-AT"
+            };
+
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 1)]
@@ -203,8 +443,51 @@ namespace XBLMarketplace_For_PC
         {
             public static List<Language> Languages = new List<Language>()
       {
-        Constants.QueryLanguage.English,
-        Constants.QueryLanguage.German
+QueryLanguage.Arabic,
+QueryLanguage.Arabic_UAE,
+QueryLanguage.Argentina,
+QueryLanguage.Belgique,
+QueryLanguage.België,
+QueryLanguage.Brasilian,
+QueryLanguage.Chilean,
+QueryLanguage.Chinese,
+QueryLanguage.Chinese_HK,
+QueryLanguage.Colombian,
+QueryLanguage.Czech,
+QueryLanguage.Dutch,
+QueryLanguage.English_AU,
+QueryLanguage.English_CA,
+QueryLanguage.English_HK,
+QueryLanguage.English_SG,
+QueryLanguage.English_SA,
+QueryLanguage.English_UK,
+QueryLanguage.English,
+QueryLanguage.Finnish,
+QueryLanguage.French,
+QueryLanguage.French_CA,
+QueryLanguage.French_Switzerland,
+QueryLanguage.German,
+QueryLanguage.German_Switzerland,
+QueryLanguage.Greek,
+QueryLanguage.Indian,
+QueryLanguage.Irish,
+QueryLanguage.Israeli,
+QueryLanguage.Italian,
+QueryLanguage.Japanese,
+QueryLanguage.Korean,
+QueryLanguage.Magyarország,
+QueryLanguage.Nederland,
+QueryLanguage.New_Zealand,
+QueryLanguage.Norge,
+QueryLanguage.Polish,
+QueryLanguage.Portuguese,
+QueryLanguage.Russian,
+QueryLanguage.Slovak,
+QueryLanguage.Spanish_MX,
+QueryLanguage.Swedish,
+QueryLanguage.Taiwanese,
+QueryLanguage.Turkish,
+QueryLanguage.Österreich,
       };
             public static BindingSource RegionBindingSource = new BindingSource()
       {

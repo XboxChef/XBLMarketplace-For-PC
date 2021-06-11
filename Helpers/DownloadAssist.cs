@@ -45,13 +45,29 @@ namespace XBLMarketplace_For_PC.Helpers
             get => _productInstanceId;
             set => _productInstanceId = value.ToAlphaNumeric();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public string HexTitleId
         {
-            get => _hexTitleId;
-            set => _hexTitleId = value.Remove(0, 2);
+            get
+            {
+                return _hexTitleId;
+            }
+            set
+            {
+                string x = value;
+                if (x == string.Empty)
+                {
+                    value = "Error";
+                    return;
+                }
+                else
+                {
+                    _hexTitleId = value.Remove(0, 2);
+                }
+            }
         }
-
         public string AltTitleId
         {
             get => _altTitleId.ToString("x");

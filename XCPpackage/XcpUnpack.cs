@@ -1,4 +1,4 @@
-﻿namespace XCPpackage
+﻿namespace XCPPackage
 {
     using Ionic.Zlib;
     using JasonNS.EventArguments;
@@ -7,7 +7,7 @@
     using System.Collections.Generic;
     using System.IO;
 
-    public class XcpUnpack : IDisposable
+    public class XCPUnpack : IDisposable
     {
         private FileInfo _fileIn;
         private long _lastStream;
@@ -25,12 +25,12 @@
 
         public event EventHandler<ProgressChangedEventArgs> UnpackProgressChanged;
 
-        public XcpUnpack(FileInfo fileIn)
+        public XCPUnpack(FileInfo fileIn)
         {
             this._fileIn = fileIn;
         }
 
-        public XcpUnpack(string fileIn) : this(new FileInfo(fileIn))
+        public XCPUnpack(string fileIn) : this(new FileInfo(fileIn))
         {
         }
 
@@ -297,4 +297,3 @@
         }
     }
 }
-

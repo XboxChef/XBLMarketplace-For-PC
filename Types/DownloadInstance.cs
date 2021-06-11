@@ -129,14 +129,21 @@ namespace XBLMarketplace_For_PC.Types
 
             private void _ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
             {
-                SpeedDouble = e.BytesReceived / sw.Elapsed.TotalSeconds;
-                PackageProgress = (short)e.ProgressPercentage;
-                ProgressString = e.ProgressPercentage.ToString() + "%";
-                double num = e.BytesReceived / 1024.0 / 1024.0;
-                string str1 = num.ToString("0.00");
-                num = e.TotalBytesToReceive / 1024.0 / 1024.0;
-                string str2 = num.ToString("0.00");
-                TotalDownloaded = string.Format("{0} MB's / {1} MB's", str1, str2);
+                try
+                {
+                    SpeedDouble = e.BytesReceived / sw.Elapsed.TotalSeconds;
+                    PackageProgress = (short)e.ProgressPercentage;
+                    ProgressString = e.ProgressPercentage.ToString() + "%";
+                    double num = e.BytesReceived / 1024.0 / 1024.0;
+                    string str1 = num.ToString("0.00");
+                    num = e.TotalBytesToReceive / 1024.0 / 1024.0;
+                    string str2 = num.ToString("0.00");
+                    TotalDownloaded = string.Format("{0} MB's / {1} MB's", str1, str2);
+                }
+                catch
+                {
+
+                }
             }
 
             private void _DownloadCompleted(object sender, AsyncCompletedEventArgs e)

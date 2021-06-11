@@ -1,10 +1,5 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: XBLMarketplace_For_PC.Forms.Main
-// Assembly: XBLMarketplace For PC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 1D6E0E9F-DDF5-467E-9623-656102783353
-// Assembly location: C:\Users\Serenity\Desktop\XBLMarketplace For PC.exe
-
-using ComponentOwl.BetterListView;
+﻿using ComponentOwl.BetterListView;
+using DevExpress.XtraEditors;
 using God2Iso;
 using God2Iso.Types;
 using JasonNS.Components;
@@ -29,7 +24,7 @@ using XBLMarketplace_For_PC.Types;
 
 namespace XBLMarketplace_For_PC.Forms
 {
-    public partial class Main : Form
+    public partial class Main : XtraForm
     {
 
 
@@ -491,8 +486,9 @@ namespace XBLMarketplace_For_PC.Forms
 
         private void settings_init()
         {
-            decompress_path_tb.DataBindings.Add("Text", BindingStrings.Instance, "DecompressPath");
+            decompress.DataBindings.Add("Text", BindingStrings.Instance, "DecompressPath");
             iso_path_tb.DataBindings.Add("Text", BindingStrings.Instance, "IsoPath");
+
             download_path_tb.DataBindings.Add("Text", BindingStrings.Instance, "DownloadPath");
             BindingStrings.Instance.DecompressPath = string.IsNullOrWhiteSpace(Settings.Default.DecompressPathString) ? BindingStrings.default_decompressPath : Settings.Default.DecompressPathString;
             BindingStrings.Instance.DownloadPath = string.IsNullOrWhiteSpace(Settings.Default.DownloadPathString) ? BindingStrings.default_downloadPath : Settings.Default.DownloadPathString;
@@ -619,8 +615,21 @@ namespace XBLMarketplace_For_PC.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Billy wants to cancel all these games but naw not happening...");
-            return;
+            try
+            {
+                foreach (BetterListViewItem betterListViewItem in downloadmanager_blv.Items.Where(obj => ((DownloadInstance)obj.Value).DLStatus == DownloadStatus.Canceled).ToList())
+                    downloadmanager_blv.Items.Remove(betterListViewItem);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+                throw;
+            }
+        }
+
+        private void simpleButton2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -15,6 +15,9 @@ namespace XBLMarketplace_For_PC.FormComponents
     {
         protected override void OnDrawItem(BetterListViewDrawItemEventArgs eventArgs)
         {
+            this.BackColor = Color.FromArgb(25, 25, 25);
+            this.ForeColorColumns = Color.Black;
+            ForeColor = Color.White;
             int num1 = 100;
             base.OnDrawItem(eventArgs);
             if (View != BetterListViewView.Details)

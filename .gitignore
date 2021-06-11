@@ -129,3 +129,26 @@ obj/Debug/DesignTimeResolveAssemblyReferences.cache
 obj/Debug/.NETFramework,Version=v4.8.AssemblyAttributes.cs
 obj/Debug/.NETFramework,Version=v4.5.2.AssemblyAttributes.cs
 .cr/personal/FavoritesList/List.xml
+*.banner
+*.pid
+.vs/XBLMarketplace For PC/v16/.suo
+bin/Debug/DataCache/66ACD00077FE10009115D80258410B4A.pid
+bin/Debug/Debug.rar
+bin/Debug/DevExpress.Data.Desktop.v20.2.xml
+bin/Debug/DevExpress.Data.v20.2.xml
+bin/Debug/DevExpress.Office.v20.2.Core.xml
+bin/Debug/DevExpress.Pdf.v20.2.Core.xml
+bin/Debug/DevExpress.Pdf.v20.2.Drawing.xml
+bin/Debug/DevExpress.Printing.v20.2.Core.xml
+bin/Debug/DevExpress.RichEdit.v20.2.Core.xml
+bin/Debug/DevExpress.Sparkline.v20.2.Core.xml
+bin/Debug/DevExpress.Utils.v20.2.xml
+bin/Debug/DevExpress.XtraBars.v20.2.xml
+bin/Debug/DevExpress.XtraEditors.v20.2.xml
+bin/Debug/DevExpress.XtraGrid.v20.2.xml
+bin/Debug/DevExpress.XtraLayout.v20.2.xml
+bin/Debug/DevExpress.XtraPrinting.v20.2.xml
+bin/Debug/DevExpress.XtraRichEdit.v20.2.xml
+bin/Debug/DevExpress.XtraTreeList.v20.2.xml
+bin/Debug/Xbox Compressed Package/Altered Beast.xcp
+*.pid

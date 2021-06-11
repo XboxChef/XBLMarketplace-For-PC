@@ -125,7 +125,8 @@ namespace XBLMarketplace_For_PC.Helpers
         {
           new OfferEntry()
           {
-            Reason = "NoContentID",
+            Reason = "Unavailable",
+           
             Urlchecked = true
           }
         };
@@ -149,6 +150,7 @@ namespace XBLMarketplace_For_PC.Helpers
             if (((!Download.FileCache.DataLoaded ? 1 : (!Download.FileCache.Urlchecked ? 1 : 0)) | (force ? 1 : 0)) == 0)
                 return;
             TitleIDs titleIds = ParseproductInstance(DownloadCatalogueXDoc());
+            
             Download.HexTitleId = titleIds.HextitleId;
             Download.AltTitleId = titleIds.Alttitleid;
             Download.ProductInstanceId = titleIds.ProductInstanceId;

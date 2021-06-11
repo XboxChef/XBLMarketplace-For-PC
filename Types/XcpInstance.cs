@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using XCPpackage;
+using XCPPackage;
 
 namespace XBLMarketplace_For_PC.Types
 {
@@ -17,7 +17,7 @@ namespace XBLMarketplace_For_PC.Types
         private bool _fullextract;
         private List<FileInfo> _godfilelist;
         private GameOnDemand _godinstance;
-        private readonly XcpUnpack _unpackerInstance;
+        private readonly XCPUnpack _unpackerInstance;
         /// <summary>
         /// 
         /// </summary>
@@ -37,7 +37,7 @@ namespace XBLMarketplace_For_PC.Types
             OutFolder = outputFolder + "\\" + Path.GetFileNameWithoutExtension(InFile);
             OutFile = string.Empty;
             _cleanup = cleanup;
-            _unpackerInstance = new XcpUnpack(InFile);
+            _unpackerInstance = new XCPUnpack(InFile);
             _unpackerInstance.UnpackAndSplitProgressChanged += new EventHandler<ProgressChangedEventArgs>(XcpInstance_UnpackAndSplitProgressChanged);
             _unpackerInstance.UnpackProgressChanged += new EventHandler<ProgressChangedEventArgs>(XcpInstance_UnpackProgressChanged);
             _unpackerInstance.SplitProgressChanged += new EventHandler<ProgressChangedEventArgs>(XcpInstance_SplitProgressChanged);
