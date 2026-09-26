@@ -290,7 +290,7 @@ namespace XBLMarketplace_For_PC.Forms
             // 
             this.DownloadSpeed_tssl.Name = "DownloadSpeed_tssl";
             this.DownloadSpeed_tssl.Size = new System.Drawing.Size(115, 15);
-            this.DownloadSpeed_tssl.Text = "DownloadSpeed_tssl";
+            this.DownloadSpeed_tssl.Text = "—";
             // 
             // region_group
             // 
@@ -417,7 +417,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.next_btn.Name = "next_btn";
             this.next_btn.Size = new System.Drawing.Size(75, 23);
             this.next_btn.TabIndex = 1;
-            this.next_btn.Text = "Next --->";
+            this.next_btn.Text = "Next ›";
             this.next_btn.UseVisualStyleBackColor = true;
             this.next_btn.Click += new System.EventHandler(this.marketplace_next_btn_Click);
             // 
@@ -477,7 +477,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.prev_btn.Name = "prev_btn";
             this.prev_btn.Size = new System.Drawing.Size(75, 23);
             this.prev_btn.TabIndex = 0;
-            this.prev_btn.Text = "<--- Previous";
+            this.prev_btn.Text = "‹ Previous";
             this.prev_btn.UseVisualStyleBackColor = true;
             this.prev_btn.Click += new System.EventHandler(this.marketplace_prev_btn_Click);
             // 
@@ -527,7 +527,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.entrypp_label.Name = "entrypp_label";
             this.entrypp_label.Size = new System.Drawing.Size(41, 28);
             this.entrypp_label.TabIndex = 2;
-            this.entrypp_label.Text = "Entry Per Page:";
+            this.entrypp_label.Text = "Per page:";
             this.entrypp_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // entrys_num
@@ -719,7 +719,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.gametitle_label.Name = "gametitle_label";
             this.gametitle_label.Size = new System.Drawing.Size(127, 19);
             this.gametitle_label.TabIndex = 5;
-            this.gametitle_label.Text = "Game Title :";
+            this.gametitle_label.Text = "Title:";
             this.gametitle_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // developer_label
@@ -730,7 +730,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.developer_label.Name = "developer_label";
             this.developer_label.Size = new System.Drawing.Size(127, 19);
             this.developer_label.TabIndex = 6;
-            this.developer_label.Text = "Developer :";
+            this.developer_label.Text = "Developer:";
             this.developer_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // publisher_label
@@ -741,7 +741,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.publisher_label.Name = "publisher_label";
             this.publisher_label.Size = new System.Drawing.Size(127, 19);
             this.publisher_label.TabIndex = 7;
-            this.publisher_label.Text = "Publisher :";
+            this.publisher_label.Text = "Publisher:";
             this.publisher_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // releasedate_label
@@ -752,7 +752,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.releasedate_label.Name = "releasedate_label";
             this.releasedate_label.Size = new System.Drawing.Size(127, 19);
             this.releasedate_label.TabIndex = 8;
-            this.releasedate_label.Text = "Release Date :";
+            this.releasedate_label.Text = "Release Date:";
             this.releasedate_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // genre_label
@@ -773,7 +773,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.extrainfo_Label.Name = "extrainfo_Label";
             this.extrainfo_Label.Size = new System.Drawing.Size(127, 21);
             this.extrainfo_Label.TabIndex = 10;
-            this.extrainfo_Label.Text = "Extra Information: ";
+            this.extrainfo_Label.Text = "Extra Information:";
             this.extrainfo_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // extrainfo_btn
@@ -1043,7 +1043,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.xcptogod_gb.Size = new System.Drawing.Size(926, 245);
             this.xcptogod_gb.TabIndex = 0;
             this.xcptogod_gb.TabStop = false;
-            this.xcptogod_gb.Text = "Xbox Compressed Package -> Decompress to Game On Demand";
+            this.xcptogod_gb.Text = "Xbox Compressed Package (XCP) → Games on Demand";
             // 
             // xcptogod_tlp
             // 
@@ -1195,7 +1195,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.godtoiso_gb.Size = new System.Drawing.Size(926, 247);
             this.godtoiso_gb.TabIndex = 1;
             this.godtoiso_gb.TabStop = false;
-            this.godtoiso_gb.Text = "Game On Demand -> Iso";
+            this.godtoiso_gb.Text = "Games on Demand → ISO";
             // 
             // godtoiso_tlp
             // 
@@ -1308,7 +1308,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.godtoiso_CreateIso_btn.Name = "godtoiso_CreateIso_btn";
             this.godtoiso_CreateIso_btn.Size = new System.Drawing.Size(97, 20);
             this.godtoiso_CreateIso_btn.TabIndex = 5;
-            this.godtoiso_CreateIso_btn.Text = "Convert to Iso";
+            this.godtoiso_CreateIso_btn.Text = "Convert to ISO";
             this.godtoiso_CreateIso_btn.UseVisualStyleBackColor = true;
             this.godtoiso_CreateIso_btn.Click += new System.EventHandler(this.godtoiso_CreateIso_btn_Click);
             // 
@@ -1344,7 +1344,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.InfoAndSettings_tabPage.Padding = new System.Windows.Forms.Padding(3);
             this.InfoAndSettings_tabPage.Size = new System.Drawing.Size(938, 510);
             this.InfoAndSettings_tabPage.TabIndex = 1;
-            this.InfoAndSettings_tabPage.Text = "Info&Settings";
+            this.InfoAndSettings_tabPage.Text = "Info & Settings";
             this.InfoAndSettings_tabPage.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel12
@@ -1733,7 +1733,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.setting_label_batchdelay.Name = "setting_label_batchdelay";
             this.setting_label_batchdelay.Size = new System.Drawing.Size(94, 26);
             this.setting_label_batchdelay.TabIndex = 10;
-            this.setting_label_batchdelay.Text = "Batch Delay (0 Disable\'s Batch):";
+            this.setting_label_batchdelay.Text = "Batch Delay (0 disables batching):";
             this.setting_label_batchdelay.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // setting_label_decompressTo
@@ -1766,7 +1766,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.setting_label_IsoTo.Name = "setting_label_IsoTo";
             this.setting_label_IsoTo.Size = new System.Drawing.Size(94, 26);
             this.setting_label_IsoTo.TabIndex = 16;
-            this.setting_label_IsoTo.Text = "Iso Path:";
+            this.setting_label_IsoTo.Text = "ISO Path:";
             this.setting_label_IsoTo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // useragent_sel
@@ -1947,7 +1947,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.versionval_label.Name = "versionval_label";
             this.versionval_label.Size = new System.Drawing.Size(67, 27);
             this.versionval_label.TabIndex = 2;
-            this.versionval_label.Text = "versionvalue";
+            this.versionval_label.Text = "";
             this.versionval_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // About_btn
@@ -1958,7 +1958,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.About_btn.Name = "About_btn";
             this.About_btn.Size = new System.Drawing.Size(87, 21);
             this.About_btn.TabIndex = 3;
-            this.About_btn.Text = "About&Thanks";
+            this.About_btn.Text = "About & Thanks";
             this.About_btn.UseMnemonic = false;
             this.About_btn.UseVisualStyleBackColor = true;
             this.About_btn.Click += new System.EventHandler(this.About_btn_Click);

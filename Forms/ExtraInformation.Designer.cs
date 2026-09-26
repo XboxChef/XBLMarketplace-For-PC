@@ -60,7 +60,7 @@
             this.ok_btn.Name = "ok_btn";
             this.ok_btn.Size = new System.Drawing.Size(75, 23);
             this.ok_btn.TabIndex = 5;
-            this.ok_btn.Text = "Ok";
+            this.ok_btn.Text = "OK";
             this.ok_btn.UseVisualStyleBackColor = false;
             this.ok_btn.Click += new System.EventHandler(this.ok_btn_Click);
             // 
@@ -90,7 +90,7 @@
             this.MinimizeBox = false;
             this.Name = "ExtraInformation";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ExtraInformation";
+            this.Text = "Extra Information";
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gamecapabilityview)).EndInit();
             this.ResumeLayout(false);
