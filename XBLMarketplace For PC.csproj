@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="FormComponents\BetterListViewExColumnHeader.cs" />
     <Compile Include="FormComponents\BetterListViewExColumnType.cs" />
+    <Compile Include="FormComponents\Theme.cs" />
     <Compile Include="FormComponents\ExtendedClient.cs">
       <SubType>Component</SubType>
     </Compile>

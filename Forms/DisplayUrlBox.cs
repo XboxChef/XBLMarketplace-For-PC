@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using XBLMarketplace_For_PC.FormComponents;
 
 namespace XBLMarketplace_For_PC.Forms
 {
@@ -8,6 +9,8 @@ namespace XBLMarketplace_For_PC.Forms
         public DisplayUrlBox()
         {
             InitializeComponent();
+            Theme.Apply(this, copytoclipboard_btn);
+            StartPosition = FormStartPosition.CenterParent;
         }
 
         private void copytoclipboard_btn_Click(object sender, EventArgs e)

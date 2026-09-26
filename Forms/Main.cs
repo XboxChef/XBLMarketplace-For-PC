@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using God2Iso;
 using JasonNS.Components;
 using JasonNS.Forms;
+using XBLMarketplace_For_PC.FormComponents;
 using XBLMarketplace_For_PC.Helpers;
 using XBLMarketplace_For_PC.Types;
 
@@ -24,6 +25,10 @@ namespace XBLMarketplace_For_PC.Forms
         public Main()
         {
             InitializeComponent();
+            Theme.Apply(this, directdownload_btn, go_btn, xcptogod_UnpackAll_btn, godtoiso_ConvertAll_btn);
+            Theme.AddHeader(this, "Xbox Live Marketplace", "for PC");
+            StartPosition = FormStartPosition.CenterScreen;
+            MinimumSize = new System.Drawing.Size(900, 600);
         }
 
         private void Form1_Load(object sender, EventArgs e)

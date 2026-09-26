@@ -125,7 +125,7 @@
             this.Name = "DisplayUrlBox";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "XCP Url";
+            this.Text = "Download URL";
             this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
