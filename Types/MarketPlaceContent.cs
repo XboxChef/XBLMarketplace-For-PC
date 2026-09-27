@@ -27,8 +27,16 @@ namespace XBLMarketplace_For_PC.Types
 
         public MarketPlaceContent(XElement node,Language lang)
         {
-            var firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameTitleMediaId").FirstOrDefault();
-            if (firstOrDefault != null) _catalogue = new CatalogueAssist(lang, firstOrDefault.Value.Remove(0,9));
+            Entry = node;
+            //Required
+            var firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Atom + "id").FirstOrDefault();
+            if (firstOrDefault == null) throw new NullReferenceException();
+            _catalogue = new CatalogueAssist(lang, firstOrDefault.Value.Substring(9));
+
+            //Add-ons (DLC, themes, etc.) point at their parent game, games point at themselves
+            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameTitleMediaId").FirstOrDefault();
+            if (firstOrDefault != null && !string.Equals(firstOrDefault.Value.Substring(9), _catalogue.ProductId, StringComparison.OrdinalIgnoreCase))
+                _catalogue.Download.FileCache.DiscardOldVersions = true;
 
             firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "reducedDescription").FirstOrDefault();
             if (firstOrDefault == null) firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "description").FirstOrDefault();
@@ -62,16 +70,28 @@ namespace XBLMarketplace_For_PC.Types
             if (firstOrDefault != null) Thumburl = firstOrDefault.Value;
             else Thumburl = null;
 
-            //Required
-            firstOrDefault = node.Descendants(Constants.NetworkConnectivity.Namespaces.Atom + "id").FirstOrDefault();
-            if (firstOrDefault == null) throw new NullReferenceException();
-            _catalogue.ProductId = firstOrDefault.Value.Substring(9);
-
             if (node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameCapabilities").FirstOrDefault()!=null)
                 Capabilities = new GameCapabilities(node.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "gameCapabilities").FirstOrDefault());
         }
 
-        public string CanDownload => _catalogue.Download.FileCache.Reason;
+        /// <summary>
+        /// The catalogue entry this item was built from, kept for archiving.
+        /// </summary>
+        public XElement Entry { get; }
+
+        public string ProductId => _catalogue.ProductId;
+
+        /// <summary>
+        /// The product record listing this item's packages (content ids, sizes, title id).
+        /// </summary>
+        public string ProductUrl => _catalogue.CatalogueUrl;
+
+        /// <summary>
+        /// Shown in place of the cached result while a check runs or after it failed. Never saved.
+        /// </summary>
+        public string CheckStatus { get; set; }
+
+        public string CanDownload => CheckStatus ?? _catalogue.Download.FileCache.Reason;
         public bool DownloadChecked => _catalogue.Download.FileCache.Urlchecked;
         public string DownloadUrl => _catalogue.Download.FileCache.DownloadUrl;
         public string Description { get; private set; }
@@ -110,19 +130,28 @@ namespace XBLMarketplace_For_PC.Types
 
         public async Task<Image> InitImageAsync(string url)
         {
-            string cacheLocation = Constants.Envpath + "\\BannerCache\\" + Title.MakeFileSystemSafe() + ".banner";
-            if(!Directory.Exists(Constants.Envpath + "\\BannerCache\\"))
+            string cacheLocation = ContentCache.BannerDirectory + Title.MakeFileSystemSafe() + ".banner";
+            if(!Directory.Exists(ContentCache.BannerDirectory))
             {
-                Directory.CreateDirectory(Constants.Envpath + "\\BannerCache\\");
+                Directory.CreateDirectory(ContentCache.BannerDirectory);
             }
 
             Tokensource = new CancellationTokenSource();
             var tcs = new TaskCompletionSource<Image>();
             if (File.Exists(cacheLocation))
             {
-                _thumb = Image.FromFile(cacheLocation);
-                tcs.TrySetResult(_thumb);
-                return _thumb;
+                try
+                {
+                    _thumb = LoadCachedImage(cacheLocation);
+                    tcs.TrySetResult(_thumb);
+                    return _thumb;
+                }
+                catch (Exception e)
+                {
+                    //Unreadable banner, fetch it again below
+                    Console.WriteLine(e.ToString());
+                    File.Delete(cacheLocation);
+                }
             }
             Image webImage = null;
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
@@ -144,7 +173,7 @@ namespace XBLMarketplace_For_PC.Types
                     responseStream?.Dispose();
                 });
             _thumb = tcs.Task.Result;
-            _thumb.Save(cacheLocation, ImageFormat.Jpeg);
+            _thumb?.Save(cacheLocation, ImageFormat.Jpeg);
 
             if (Tokensource.IsCancellationRequested)
             {
@@ -153,6 +182,16 @@ namespace XBLMarketplace_For_PC.Types
             }
             Tokensource.Dispose();
             return tcs.Task.Result;
+        }
+
+        //Image.FromFile keeps the file locked until disposed, which blocks clearing the cache
+        private static Image LoadCachedImage(string path)
+        {
+            using (var stream = new MemoryStream(File.ReadAllBytes(path)))
+            using (var image = Image.FromStream(stream))
+            {
+                return new Bitmap(image);
+            }
         }
 
         public void CheckDownloadUrl(bool isCanceled, bool force = false) => _catalogue.CheckDownloadUrl(isCanceled, force);

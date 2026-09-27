@@ -13,12 +13,12 @@ namespace XBLMarketplace_For_PC.Forms
     public partial class Main : Form
     {
         private BatchUrlChecker _batchhandler;
-        private ThreadedBindingList<GameOnDemand> _godList;
+        private UiBindingList<GameOnDemand> _godList;
         Webhelper _helper = new Webhelper();
         private ThreadedBindingList<IsoInstance> _isoList;
 
 
-        private ThreadedBindingList<XcpInstance> _xcpList;
+        private UiBindingList<XcpInstance> _xcpList;
 
         private AboutBox ThanksBox;
 

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Xml.Linq;
-using XBLMarketplace_For_PC.FormComponents;
 using XBLMarketplace_For_PC.Structs;
 using XBLMarketplace_For_PC.Types;
 
@@ -15,7 +14,6 @@ namespace XBLMarketplace_For_PC.Helpers
     public class CatalogueAssist
     {
         private string _bodytypes = Constants.NetworkConnectivity.Bodytypes;
-        private UriBuilder _catalogueUri;
         private string _detailview = Constants.NetworkConnectivity.Detailview;
         private string _offerfilter = Constants.NetworkConnectivity.Offerfilter;
         private string _pagenum = Constants.NetworkConnectivity.Pagenum;
@@ -24,7 +22,6 @@ namespace XBLMarketplace_For_PC.Helpers
         private string _producttypes = Constants.NetworkConnectivity.Producttypes;
         private string _stores = Constants.NetworkConnectivity.Stores;
         private string _tiers = Constants.NetworkConnectivity.Tiers;
-        private string _userAgent = Constants.NetworkConnectivity.Useragent;
 
         public Language Currentlang;
         public DownloadAssist Download = new DownloadAssist();
@@ -41,14 +38,17 @@ namespace XBLMarketplace_For_PC.Helpers
             _parameters.Add("tiers", _tiers);
             _parameters.Add("offerfilter", _offerfilter);
             _parameters.Add("producttypes", _producttypes);
-            _catalogueUri = new UriBuilder()
-            {
-                Scheme = "http",
-                Host = Constants.NetworkConnectivity.CataHost,
-                Path = CataLocation,
-                Query = _parameters.ToString()
-            };
         }
+
+        //Built on demand so it always uses the current ProductId.
+        //Building it once in the constructor pinned add-ons to their parent game's product.
+        internal string CatalogueUrl => new UriBuilder()
+        {
+            Scheme = "http",
+            Host = Constants.NetworkConnectivity.CataHost,
+            Path = CataLocation,
+            Query = _parameters.ToString()
+        }.ToString();
 
         public string ProductId
         {
@@ -66,27 +66,27 @@ namespace XBLMarketplace_For_PC.Helpers
         }
 
         /// <summary>
-        ///     Returns XMLDoc Containing the ContentID
+        ///     Returns XMLDoc Containing the ContentID. Throws if Xbox Live can't give a real answer,
+        ///     so a failed lookup is never cached as a product without content.
         /// </summary>
         private XDocument DownloadCatalogueXDoc()
         {
-            try
+            HttpWebRequest request = WebRequest.Create(CatalogueUrl) as HttpWebRequest;
+            request.UserAgent = Constants.NetworkConnectivity.Useragent;
+            request.Timeout = 15000;
+            request.ReadWriteTimeout = 15000;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            string result;
+            using (WebResponse response = request.GetResponse())
+            using (StreamReader sr = new StreamReader(response.GetResponseStream()))
             {
-                HttpWebRequest request = WebRequest.Create(_catalogueUri.ToString()) as HttpWebRequest;
-                request.UserAgent = _userAgent;
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-                StreamReader sr = new StreamReader(response.GetResponseStream());
-                string result = sr.ReadToEnd().Trim();
-                sr.Close();
-                var xmlDoc = XDocument.Parse(result);
-                return xmlDoc;
+                result = sr.ReadToEnd().Trim();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                return null;
-            }
+            var xmlDoc = XDocument.Parse(result);
+            //Errors come back as an <Exception> document instead of a feed
+            if (xmlDoc.Root == null || xmlDoc.Root.Name.LocalName != "feed")
+                throw new InvalidDataException("Unexpected catalogue response: " + xmlDoc.Root?.Name.LocalName);
+            return xmlDoc;
         }
 
         private TitleIDs ParseproductInstance(XDocument node)
@@ -149,9 +149,10 @@ namespace XBLMarketplace_For_PC.Helpers
             }
             if(!Download.FileCache.DataLoaded || !Download.FileCache.Urlchecked || force) 
             {TitleIDs tempIDs = ParseproductInstance(DownloadCatalogueXDoc());
-                Download.HexTitleId = tempIDs.HextitleId;
-                Download.AltTitleId = tempIDs.Alttitleid;
-                Download.ProductInstanceId = tempIDs.ProductInstanceId;
+                //Delisted products come back empty, leave the ids unset rather than throw
+                if (tempIDs.HextitleId != null) Download.HexTitleId = tempIDs.HextitleId;
+                if (tempIDs.Alttitleid != null) Download.AltTitleId = tempIDs.Alttitleid;
+                if (tempIDs.ProductInstanceId != null) Download.ProductInstanceId = tempIDs.ProductInstanceId;
                 Download.Offers = tempIDs.Offers;
             }
         }
@@ -162,32 +163,13 @@ namespace XBLMarketplace_For_PC.Helpers
             if (isCanceled) return;
             InitializeUrl(force);
 
-            using (ExtendedClient exist = new ExtendedClient {HeadOnly = true})
-            {
-                try
-                {
-                    bool fduNull = Download.FullDownloadUrl == null;
-                    if (!fduNull) exist.DownloadStringAsync(Download.FullDownloadUrl, isCanceled);
-                    Download.FileCache.DownloadUrl = Download.FullDownloadUrl;
-                    Download.FileCache.ProductId = ProductId;
-                    Download.FileCache.Urlchecked = true;
-                    if (!fduNull) Download.FileCache.Reason = "True";
-                    Download.FileCache.Save();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    Download.FileCache.DownloadUrl = Download.FullDownloadUrl;
-                    Download.FileCache.ProductId = ProductId;
-                    Download.FileCache.Urlchecked = true;
-                    Download.FileCache.Reason = "Invalid";
-                    Download.FileCache.Save();
-                }
-                finally
-                {
-                    exist.Dispose();
-                }
-            }
+            //A content id means the package is on Xbox Live's download server. The HEAD request that
+            //used to be sent here was never awaited, so it only added a request per item.
+            Download.FileCache.DownloadUrl = Download.FullDownloadUrl;
+            Download.FileCache.ProductId = ProductId;
+            Download.FileCache.Urlchecked = true;
+            if (Download.FullDownloadUrl != null) Download.FileCache.Reason = "True";
+            Download.FileCache.Save();
         }
     }
 }

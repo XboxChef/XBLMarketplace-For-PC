@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using XBLMarketplace_For_PC.Structs;
 
@@ -79,6 +81,29 @@ namespace XBLMarketplace_For_PC.Types
             if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Co-op Hard Drive Required", Value = singleOrDefault.Value });
             singleOrDefault = capabilityRaw.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "onlineHardDriveRequired").SingleOrDefault();
             if (singleOrDefault != null) GameCapabilityInfo.Add(new GameCapabilityEntry { Id = "Online Hard Drive Required", Value = singleOrDefault.Value });
+
+            //Everything else the catalogue sends (online voice, system link, PC requirements, ...) with its name spaced out
+            foreach (XElement other in capabilityRaw.Elements().Where(e => !Listed.Contains(e.Name.LocalName)))
+            {
+                GameCapabilityInfo.Add(new GameCapabilityEntry { Id = Humanize(other.Name.LocalName), Value = other.Value });
+            }
+        }
+
+        private static readonly HashSet<string> Listed = new HashSet<string>
+        {
+            "offlineCoopHardDriveRequired", "onlineLeaderboards", "onlineContentDownload", "offlineDolbyDigital",
+            "offlineCustomSoundtracks", "offlinePeripheralCamera", "offlineVoiceCommands", "offlineMaxHDTVModeId",
+            "offlineCoopPlayersMin", "offlineCoopPlayersMax", "offlinePlayersMax", "offlinePlayersMin",
+            "onlineMultiplayerMin", "onlineMultiplayerMax", "onlineMultiplayerHardDriveRequired", "onlineCoopPlayersMin",
+            "onlineCoopPlayersMax", "onlineCoopHardDriveRequired", "onlineHardDriveRequired"
+        };
+
+        //"offlineSystemLinkMax" -> "Offline System Link Max", "pcWindowsOSType" -> "PC Windows OS Type"
+        private static string Humanize(string name)
+        {
+            string spaced = Regex.Replace(name, "(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ");
+            if (spaced.StartsWith("pc ", StringComparison.Ordinal)) return "PC " + spaced.Substring(3);
+            return spaced.Length == 0 ? spaced : char.ToUpperInvariant(spaced[0]) + spaced.Substring(1);
         }
 
         #region IDisposable Support

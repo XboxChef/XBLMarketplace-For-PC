@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using JasonNS.GenericFunctions;
+using XBLMarketplace_For_PC.Helpers;
 using XBLMarketplace_For_PC.Properties;
 
 namespace XBLMarketplace_For_PC.Forms
@@ -17,6 +18,8 @@ namespace XBLMarketplace_For_PC.Forms
             iso_path_tb.DataBindings.Add("Text", BindingStrings.Instance, "IsoPath");
             
             download_path_tb.DataBindings.Add("Text", BindingStrings.Instance, "DownloadPath");
+
+            archive_path_tb.DataBindings.Add("Text", BindingStrings.Instance, "ArchivePath");
             #endregion
 
             #region PathSettingsLoad
@@ -33,9 +36,48 @@ namespace XBLMarketplace_For_PC.Forms
                 BindingStrings.Instance.IsoPath = Settings.Default.IsoPathString;
             else BindingStrings.Instance.IsoPath = BindingStrings.default_isoPath;
 
+            if (!string.IsNullOrWhiteSpace(Settings.Default.ArchivePathString))
+                BindingStrings.Instance.ArchivePath = Settings.Default.ArchivePathString;
+            else BindingStrings.Instance.ArchivePath = BindingStrings.default_archivePath;
+
             #endregion
 
+            tabcontrol.SelectedIndexChanged += (s, e) =>
+            {
+                if (tabcontrol.SelectedTab == InfoAndSettings_tabPage) settings_UpdateCacheLabel();
+            };
+            settings_UpdateCacheLabel();
         }
+
+        #region cache
+
+        private void settings_UpdateCacheLabel()
+        {
+            try
+            {
+                ContentCache.CacheStats stats = ContentCache.GetStats();
+                cachesize_label.Text = string.Format("{0} pages, {1} banners, {2} titles ({3:0.0} MB)",
+                    stats.Pages, stats.Banners, stats.Titles, stats.Bytes / (1024.0 * 1024.0));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                cachesize_label.Text = "Unavailable";
+            }
+        }
+
+        private void settings_clearcache_btn_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(this,
+                    "Delete all cached catalog pages, banners and download checks?\nThey will be downloaded again when needed.",
+                    "Clear Cache", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            _batchhandler.Abort();
+            ContentCache.Clear();
+            settings_UpdateCacheLabel();
+        }
+
+        #endregion
 
         public static class ConverterOptions
         {
@@ -139,6 +181,28 @@ namespace XBLMarketplace_For_PC.Forms
         private void iso_path_tb_Validated(object sender, EventArgs e)
         {
             Settings.Default.IsoPathString = BindingStrings.Instance.IsoPath;
+            Settings.Default.Save();
+        }
+
+        private void archive_path_browse_btn_Click(object sender, EventArgs e)
+        {
+            BindingStrings.Instance.ArchivePath = PathHelper.BrowseForOutputFolder(BindingStrings.Instance.ArchivePath);
+            archive_path_tb_Validated(archive_path_tb, new EventArgs());
+        }
+
+        private void archive_path_tb_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox tbox = (TextBox) sender;
+            if (!tbox.Text.IsValidPath())
+            {
+                e.Cancel = true;
+                tbox.Text = BindingStrings.Instance.ArchivePath;
+            }
+        }
+
+        private void archive_path_tb_Validated(object sender, EventArgs e)
+        {
+            Settings.Default.ArchivePathString = BindingStrings.Instance.ArchivePath;
             Settings.Default.Save();
         }
 

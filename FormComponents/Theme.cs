@@ -179,8 +179,16 @@ namespace XBLMarketplace_For_PC.FormComponents
                 button.FlatAppearance.MouseOverBackColor = HoverSurface;
                 button.FlatAppearance.MouseDownBackColor = Color.FromArgb(204, 228, 204);
             }
-            button.EnabledChanged += (s, e) =>
-                button.FlatAppearance.BorderColor = button.Enabled ? (isPrimary ? Accent : Border) : Track;
+            ApplyEnabledLook(button, isPrimary);
+            button.EnabledChanged += (s, e) => ApplyEnabledLook(button, isPrimary);
+        }
+
+        //Flat buttons keep their colors when disabled, so a disabled primary button still looked clickable
+        private static void ApplyEnabledLook(Button button, bool isPrimary)
+        {
+            button.FlatAppearance.BorderColor = button.Enabled ? (isPrimary ? Accent : Border) : Track;
+            if (isPrimary) button.BackColor = button.Enabled ? Accent : Track;
+            button.Cursor = button.Enabled ? Cursors.Hand : Cursors.Default;
         }
 
         private static void StyleTabs(TabControl tabs)

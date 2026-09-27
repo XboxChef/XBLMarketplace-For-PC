@@ -73,6 +73,7 @@ namespace XBLMarketplace_For_PC.Types
                     if (!Directory.Exists(Path.GetDirectoryName(OutFile))) Directory.CreateDirectory(Path.GetDirectoryName(OutFile));
                     if (File.Exists(OutFile)) File.Delete(OutFile);
                     if (Directory.Exists(OutFile)) Directory.Delete(OutFile);
+                    client.Headers[HttpRequestHeader.UserAgent] = Constants.NetworkConnectivity.Useragent;
                     client.DownloadFileAsync(Url, OutFile, _owner ?? this);
                     DStatus = DownloadStatus.Downloading;
                     Status = PackageStatus.Downloading;
@@ -113,18 +114,22 @@ namespace XBLMarketplace_For_PC.Types
                 {
                     DStatus = DownloadStatus.Canceled;
                     Status = PackageStatus.Canceled;
+                    ProgressString = "Canceled";
+                }
+                else if (e.Error != null)
+                {
+                    //Used to fall through to Finished, which sent the missing file to the converter
+                    DStatus = DownloadStatus.Failed;
+                    Status = PackageStatus.Errored;
+                    Error = e.Error;
+                    ProgressString = "Failed";
                 }
                 else
                 {
-                    if (e.Error != null)
-                    {
-                        DStatus = DownloadStatus.Waiting;
-                        Status = PackageStatus.Errored;
-                        Error = e.Error;
-                        //throw Error;
-                    }
                     DStatus = DownloadStatus.Finished;
                     Status = PackageStatus.Waiting;
+                    PackageProgress = 100;
+                    ProgressString = "100%";
                 }
             }
         }
@@ -136,6 +141,8 @@ namespace XBLMarketplace_For_PC.Types
 
         public DownloadInstance(string url, FileInfo filePathI, PackageBase pb) : base(pb)
         {
+            //The base copies OutFile from the marketplace item, which has none, and the converter needs the real path
+            OutFile = filePathI.FullName;
             _dlHandler = new Download(url, filePathI.FullName,this,pb);
         }
 

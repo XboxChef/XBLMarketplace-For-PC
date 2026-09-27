@@ -9,6 +9,8 @@ namespace XBLMarketplace_For_PC.Forms
         public static readonly string default_downloadPath = Constants.Envpath + @"\Xbox Compressed Package";
         public static readonly string default_isoPath = Constants.Envpath + @"\Isos";
         public static readonly string default_decompressPath = Constants.Envpath + @"\Decompressed";
+        public static readonly string default_archivePath = Constants.Envpath + @"\Archive";
+        private string _archivePath = Constants.Envpath + @"\Archive";
         private string _decompressPath = Constants.Envpath + @"\Decompressed\";
 
         private string _downloadPath = Constants.Envpath + @"\Xbox Compressed Package\";
@@ -49,6 +51,19 @@ namespace XBLMarketplace_For_PC.Forms
                 {
                     _isoPath = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsoPath"));
+                }
+            }
+        }
+
+        public string ArchivePath
+        {
+            get { return _archivePath; }
+            set
+            {
+                if (value != _archivePath)
+                {
+                    _archivePath = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ArchivePath"));
                 }
             }
         }

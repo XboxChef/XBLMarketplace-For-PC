@@ -38,6 +38,9 @@ namespace XBLMarketplace_For_PC.Forms
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslNoChange1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.DownloadSpeed_tssl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.catalogstatus_tssl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.linkstatus_tssl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.archivestatus_tssl = new System.Windows.Forms.ToolStripStatusLabel();
             this.region_group = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.reg_select = new System.Windows.Forms.ComboBox();
@@ -54,6 +57,10 @@ namespace XBLMarketplace_For_PC.Forms
             this.prev_btn = new System.Windows.Forms.Button();
             this.category_group = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.search_layout = new System.Windows.Forms.TableLayoutPanel();
+            this.search_tb = new System.Windows.Forms.TextBox();
+            this.search_btn = new System.Windows.Forms.Button();
+            this.searchclear_btn = new System.Windows.Forms.Button();
             this.cat_select = new System.Windows.Forms.ComboBox();
             this.entrypp_label = new System.Windows.Forms.Label();
             this.entrys_num = new System.Windows.Forms.NumericUpDown();
@@ -81,6 +88,9 @@ namespace XBLMarketplace_For_PC.Forms
             this.directdownload_btn = new System.Windows.Forms.Button();
             this.generateurl_btn = new System.Windows.Forms.Button();
             this.fchecklist_btn = new System.Windows.Forms.Button();
+            this.archive_btn = new System.Windows.Forms.Button();
+            this.archivelist_btn = new System.Windows.Forms.Button();
+            this.archiveopen_btn = new System.Windows.Forms.Button();
             this.description_textbox = new System.Windows.Forms.RichTextBox();
             this.display_pic = new System.Windows.Forms.PictureBox();
             this.Downloads_tabPage = new System.Windows.Forms.TabPage();
@@ -137,6 +147,14 @@ namespace XBLMarketplace_For_PC.Forms
             this.updateddate_label = new System.Windows.Forms.Label();
             this.updated_sync_label = new System.Windows.Forms.Label();
             this.settings_group = new System.Windows.Forms.GroupBox();
+            this.cache_group = new System.Windows.Forms.GroupBox();
+            this.cache_layout = new System.Windows.Forms.TableLayoutPanel();
+            this.setting_label_cachedays = new System.Windows.Forms.Label();
+            this.cachedays_updown = new System.Windows.Forms.NumericUpDown();
+            this.cachedays_label2 = new System.Windows.Forms.Label();
+            this.setting_label_cachesize = new System.Windows.Forms.Label();
+            this.cachesize_label = new System.Windows.Forms.Label();
+            this.clearcache_btn = new System.Windows.Forms.Button();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.filler_label_af = new System.Windows.Forms.Label();
@@ -154,19 +172,22 @@ namespace XBLMarketplace_For_PC.Forms
             this.filler_label_a = new System.Windows.Forms.Label();
             this.setting_label_Query_Language = new System.Windows.Forms.Label();
             this.setting_label_useragent = new System.Windows.Forms.Label();
-            this.setting_label_batchdelay = new System.Windows.Forms.Label();
+            this.setting_label_checks = new System.Windows.Forms.Label();
             this.setting_label_decompressTo = new System.Windows.Forms.Label();
             this.setting_label_downloadTo = new System.Windows.Forms.Label();
             this.setting_label_IsoTo = new System.Windows.Forms.Label();
             this.useragent_sel = new System.Windows.Forms.ComboBox();
-            this.batchdelay_updown = new System.Windows.Forms.NumericUpDown();
-            this.batchdelay_label2 = new System.Windows.Forms.Label();
+            this.checks_updown = new System.Windows.Forms.NumericUpDown();
+            this.checks_label2 = new System.Windows.Forms.Label();
             this.decompress_path_tb = new System.Windows.Forms.TextBox();
             this.decompress_path_browse_btn = new System.Windows.Forms.Button();
             this.download_path_tb = new System.Windows.Forms.TextBox();
             this.iso_path_tb = new System.Windows.Forms.TextBox();
             this.download_path_browse_btn = new System.Windows.Forms.Button();
             this.iso_path_browse_btn = new System.Windows.Forms.Button();
+            this.setting_label_archiveTo = new System.Windows.Forms.Label();
+            this.archive_path_tb = new System.Windows.Forms.TextBox();
+            this.archive_path_browse_btn = new System.Windows.Forms.Button();
             this.credits_changelog_gbox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -188,6 +209,7 @@ namespace XBLMarketplace_For_PC.Forms
             ((System.ComponentModel.ISupportInitialize)(this.page_num)).BeginInit();
             this.category_group.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
+            this.search_layout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.entrys_num)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.contentview)).BeginInit();
             this.contentdescription_group.SuspendLayout();
@@ -217,7 +239,10 @@ namespace XBLMarketplace_For_PC.Forms
             this.settings_group.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.batchdelay_updown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checks_updown)).BeginInit();
+            this.cache_group.SuspendLayout();
+            this.cache_layout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedays_updown)).BeginInit();
             this.credits_changelog_gbox.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
             this.SuspendLayout();
@@ -273,7 +298,10 @@ namespace XBLMarketplace_For_PC.Forms
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslNoChange1,
-            this.DownloadSpeed_tssl});
+            this.DownloadSpeed_tssl,
+            this.catalogstatus_tssl,
+            this.linkstatus_tssl,
+            this.archivestatus_tssl});
             this.statusStrip1.Location = new System.Drawing.Point(0, 484);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(932, 20);
@@ -291,6 +319,30 @@ namespace XBLMarketplace_For_PC.Forms
             this.DownloadSpeed_tssl.Name = "DownloadSpeed_tssl";
             this.DownloadSpeed_tssl.Size = new System.Drawing.Size(115, 15);
             this.DownloadSpeed_tssl.Text = "—";
+            //
+            // catalogstatus_tssl
+            //
+            this.catalogstatus_tssl.Name = "catalogstatus_tssl";
+            this.catalogstatus_tssl.Size = new System.Drawing.Size(703, 15);
+            this.catalogstatus_tssl.Spring = true;
+            this.catalogstatus_tssl.Text = "";
+            this.catalogstatus_tssl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // linkstatus_tssl
+            //
+            this.linkstatus_tssl.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.linkstatus_tssl.Name = "linkstatus_tssl";
+            this.linkstatus_tssl.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
+            this.linkstatus_tssl.Size = new System.Drawing.Size(10, 15);
+            this.linkstatus_tssl.Text = "";
+            //
+            // archivestatus_tssl
+            //
+            this.archivestatus_tssl.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.archivestatus_tssl.Name = "archivestatus_tssl";
+            this.archivestatus_tssl.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
+            this.archivestatus_tssl.Size = new System.Drawing.Size(10, 15);
+            this.archivestatus_tssl.Text = "";
             // 
             // region_group
             // 
@@ -487,7 +539,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.category_group.Dock = System.Windows.Forms.DockStyle.Fill;
             this.category_group.Location = new System.Drawing.Point(3, 3);
             this.category_group.Name = "category_group";
-            this.category_group.Size = new System.Drawing.Size(470, 47);
+            this.category_group.Size = new System.Drawing.Size(470, 77);
             this.category_group.TabIndex = 0;
             this.category_group.TabStop = false;
             this.category_group.Text = "Category";
@@ -501,13 +553,65 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel10.Controls.Add(this.cat_select, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.entrypp_label, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.entrys_num, 2, 0);
+            this.tableLayoutPanel10.Controls.Add(this.search_layout, 0, 1);
+            this.tableLayoutPanel10.SetColumnSpan(this.search_layout, 3);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
-            this.tableLayoutPanel10.RowCount = 1;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(464, 28);
+            this.tableLayoutPanel10.RowCount = 2;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(464, 58);
             this.tableLayoutPanel10.TabIndex = 3;
+            //
+            // search_layout
+            //
+            this.search_layout.ColumnCount = 3;
+            this.search_layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.search_layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.search_layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.search_layout.Controls.Add(this.search_tb, 0, 0);
+            this.search_layout.Controls.Add(this.search_btn, 1, 0);
+            this.search_layout.Controls.Add(this.searchclear_btn, 2, 0);
+            this.search_layout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.search_layout.Location = new System.Drawing.Point(0, 28);
+            this.search_layout.Margin = new System.Windows.Forms.Padding(0);
+            this.search_layout.Name = "search_layout";
+            this.search_layout.RowCount = 1;
+            this.search_layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.search_layout.Size = new System.Drawing.Size(464, 30);
+            this.search_layout.TabIndex = 4;
+            //
+            // search_tb
+            //
+            this.search_tb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.search_tb.Location = new System.Drawing.Point(3, 5);
+            this.search_tb.Name = "search_tb";
+            this.search_tb.Size = new System.Drawing.Size(314, 20);
+            this.search_tb.TabIndex = 0;
+            this.search_tb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.marketplace_search_tb_KeyDown);
+            //
+            // search_btn
+            //
+            this.search_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.search_btn.Location = new System.Drawing.Point(323, 3);
+            this.search_btn.Name = "search_btn";
+            this.search_btn.Size = new System.Drawing.Size(74, 24);
+            this.search_btn.TabIndex = 1;
+            this.search_btn.Text = "Search";
+            this.search_btn.UseVisualStyleBackColor = true;
+            this.search_btn.Click += new System.EventHandler(this.marketplace_search_btn_Click);
+            //
+            // searchclear_btn
+            //
+            this.searchclear_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchclear_btn.Location = new System.Drawing.Point(403, 3);
+            this.searchclear_btn.Name = "searchclear_btn";
+            this.searchclear_btn.Size = new System.Drawing.Size(58, 24);
+            this.searchclear_btn.TabIndex = 2;
+            this.searchclear_btn.Text = "Clear";
+            this.searchclear_btn.UseVisualStyleBackColor = true;
+            this.searchclear_btn.Click += new System.EventHandler(this.marketplace_searchclear_btn_Click);
             // 
             // cat_select
             // 
@@ -647,13 +751,13 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 104);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 6;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66623F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66623F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66623F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66623F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66623F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66887F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(420, 116);
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(420, 130);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
             // gametitle_text
@@ -769,24 +873,24 @@ namespace XBLMarketplace_For_PC.Forms
             // extrainfo_Label
             // 
             this.extrainfo_Label.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extrainfo_Label.Location = new System.Drawing.Point(3, 95);
+            this.extrainfo_Label.Location = new System.Drawing.Point(3, 100);
             this.extrainfo_Label.Name = "extrainfo_Label";
-            this.extrainfo_Label.Size = new System.Drawing.Size(127, 21);
+            this.extrainfo_Label.Size = new System.Drawing.Size(127, 30);
             this.extrainfo_Label.TabIndex = 10;
             this.extrainfo_Label.Text = "Extra Information:";
             this.extrainfo_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // extrainfo_btn
             // 
-            this.extrainfo_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extrainfo_btn.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.extrainfo_btn.AutoSize = true;
             this.extrainfo_btn.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extrainfo_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
-            this.extrainfo_btn.Location = new System.Drawing.Point(136, 98);
+            this.extrainfo_btn.Location = new System.Drawing.Point(136, 103);
+            this.extrainfo_btn.MinimumSize = new System.Drawing.Size(160, 24);
             this.extrainfo_btn.Name = "extrainfo_btn";
-            this.extrainfo_btn.Size = new System.Drawing.Size(281, 15);
+            this.extrainfo_btn.Size = new System.Drawing.Size(160, 24);
             this.extrainfo_btn.TabIndex = 11;
             this.extrainfo_btn.Text = "Show Extra Information";
-            this.extrainfo_btn.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.extrainfo_btn.UseVisualStyleBackColor = true;
             this.extrainfo_btn.Click += new System.EventHandler(this.marketplace_extrainfo_btn_Click);
             // 
@@ -813,10 +917,14 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel9.Controls.Add(this.directdownload_btn, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.generateurl_btn, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.fchecklist_btn, 2, 0);
+            this.tableLayoutPanel9.Controls.Add(this.archive_btn, 0, 1);
+            this.tableLayoutPanel9.Controls.Add(this.archivelist_btn, 1, 1);
+            this.tableLayoutPanel9.Controls.Add(this.archiveopen_btn, 2, 1);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowCount = 2;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel9.Size = new System.Drawing.Size(414, 29);
             this.tableLayoutPanel9.TabIndex = 0;
@@ -852,6 +960,37 @@ namespace XBLMarketplace_For_PC.Forms
             this.fchecklist_btn.Text = "Re-Check List";
             this.fchecklist_btn.UseVisualStyleBackColor = true;
             this.fchecklist_btn.Click += new System.EventHandler(this.marketplace_forceCheckList_btn_Click);
+            //
+            // archive_btn
+            //
+            this.archive_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.archive_btn.Location = new System.Drawing.Point(35, 32);
+            this.archive_btn.Name = "archive_btn";
+            this.archive_btn.Size = new System.Drawing.Size(110, 23);
+            this.archive_btn.TabIndex = 3;
+            this.archive_btn.Text = "Archive";
+            this.archive_btn.UseVisualStyleBackColor = true;
+            this.archive_btn.Click += new System.EventHandler(this.marketplace_archive_btn_Click);
+            //
+            // archivelist_btn
+            //
+            this.archivelist_btn.Location = new System.Drawing.Point(151, 32);
+            this.archivelist_btn.Name = "archivelist_btn";
+            this.archivelist_btn.Size = new System.Drawing.Size(110, 23);
+            this.archivelist_btn.TabIndex = 4;
+            this.archivelist_btn.Text = "Archive List";
+            this.archivelist_btn.UseVisualStyleBackColor = true;
+            this.archivelist_btn.Click += new System.EventHandler(this.marketplace_archivelist_btn_Click);
+            //
+            // archiveopen_btn
+            //
+            this.archiveopen_btn.Location = new System.Drawing.Point(267, 32);
+            this.archiveopen_btn.Name = "archiveopen_btn";
+            this.archiveopen_btn.Size = new System.Drawing.Size(110, 23);
+            this.archiveopen_btn.TabIndex = 5;
+            this.archiveopen_btn.Text = "Open Archive";
+            this.archiveopen_btn.UseVisualStyleBackColor = true;
+            this.archiveopen_btn.Click += new System.EventHandler(this.marketplace_archiveopen_btn_Click);
             // 
             // description_textbox
             // 
@@ -1165,7 +1304,6 @@ namespace XBLMarketplace_For_PC.Forms
             // xcptogod_UnpackAll_btn
             // 
             this.xcptogod_UnpackAll_btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.xcptogod_UnpackAll_btn.Enabled = false;
             this.xcptogod_UnpackAll_btn.Location = new System.Drawing.Point(820, 177);
             this.xcptogod_UnpackAll_btn.Name = "xcptogod_UnpackAll_btn";
             this.xcptogod_UnpackAll_btn.Size = new System.Drawing.Size(97, 20);
@@ -1360,8 +1498,8 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 2;
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53.87674F));
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46.12326F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(932, 504);
             this.tableLayoutPanel12.TabIndex = 3;
             // 
@@ -1531,6 +1669,7 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.86559F));
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.13441F));
             this.tableLayoutPanel14.Controls.Add(this.tableLayoutPanel13, 0, 0);
+            this.tableLayoutPanel14.Controls.Add(this.cache_group, 1, 0);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
@@ -1565,23 +1704,26 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel13.Controls.Add(this.filler_label_a, 0, 1);
             this.tableLayoutPanel13.Controls.Add(this.setting_label_Query_Language, 0, 0);
             this.tableLayoutPanel13.Controls.Add(this.setting_label_useragent, 0, 2);
-            this.tableLayoutPanel13.Controls.Add(this.setting_label_batchdelay, 0, 4);
+            this.tableLayoutPanel13.Controls.Add(this.setting_label_checks, 0, 4);
             this.tableLayoutPanel13.Controls.Add(this.setting_label_decompressTo, 0, 6);
             this.tableLayoutPanel13.Controls.Add(this.setting_label_downloadTo, 0, 8);
             this.tableLayoutPanel13.Controls.Add(this.setting_label_IsoTo, 0, 10);
             this.tableLayoutPanel13.Controls.Add(this.useragent_sel, 1, 2);
-            this.tableLayoutPanel13.Controls.Add(this.batchdelay_updown, 1, 4);
-            this.tableLayoutPanel13.Controls.Add(this.batchdelay_label2, 2, 4);
+            this.tableLayoutPanel13.Controls.Add(this.checks_updown, 1, 4);
+            this.tableLayoutPanel13.Controls.Add(this.checks_label2, 2, 4);
             this.tableLayoutPanel13.Controls.Add(this.decompress_path_tb, 1, 6);
             this.tableLayoutPanel13.Controls.Add(this.decompress_path_browse_btn, 4, 6);
             this.tableLayoutPanel13.Controls.Add(this.download_path_tb, 1, 8);
             this.tableLayoutPanel13.Controls.Add(this.iso_path_tb, 1, 10);
             this.tableLayoutPanel13.Controls.Add(this.download_path_browse_btn, 4, 8);
             this.tableLayoutPanel13.Controls.Add(this.iso_path_browse_btn, 4, 10);
+            this.tableLayoutPanel13.Controls.Add(this.setting_label_archiveTo, 0, 12);
+            this.tableLayoutPanel13.Controls.Add(this.archive_path_tb, 1, 12);
+            this.tableLayoutPanel13.Controls.Add(this.archive_path_browse_btn, 4, 12);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
-            this.tableLayoutPanel13.RowCount = 13;
+            this.tableLayoutPanel13.RowCount = 14;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
@@ -1594,8 +1736,9 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(364, 240);
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(364, 246);
             this.tableLayoutPanel13.TabIndex = 1;
             // 
             // filler_label_af
@@ -1723,18 +1866,18 @@ namespace XBLMarketplace_For_PC.Forms
             this.setting_label_useragent.Name = "setting_label_useragent";
             this.setting_label_useragent.Size = new System.Drawing.Size(94, 26);
             this.setting_label_useragent.TabIndex = 6;
-            this.setting_label_useragent.Text = "User Agent: (Not Implemented)";
+            this.setting_label_useragent.Text = "User Agent:";
             this.setting_label_useragent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // setting_label_batchdelay
+            // setting_label_checks
             // 
-            this.setting_label_batchdelay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.setting_label_batchdelay.Location = new System.Drawing.Point(3, 78);
-            this.setting_label_batchdelay.Name = "setting_label_batchdelay";
-            this.setting_label_batchdelay.Size = new System.Drawing.Size(94, 26);
-            this.setting_label_batchdelay.TabIndex = 10;
-            this.setting_label_batchdelay.Text = "Batch Delay (0 disables batching):";
-            this.setting_label_batchdelay.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.setting_label_checks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setting_label_checks.Location = new System.Drawing.Point(3, 78);
+            this.setting_label_checks.Name = "setting_label_checks";
+            this.setting_label_checks.Size = new System.Drawing.Size(94, 26);
+            this.setting_label_checks.TabIndex = 10;
+            this.setting_label_checks.Text = "Link Checks at Once:";
+            this.setting_label_checks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // setting_label_decompressTo
             // 
@@ -1771,45 +1914,45 @@ namespace XBLMarketplace_For_PC.Forms
             // 
             // useragent_sel
             // 
-            this.tableLayoutPanel13.SetColumnSpan(this.useragent_sel, 2);
+            this.tableLayoutPanel13.SetColumnSpan(this.useragent_sel, 3);
+            this.useragent_sel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.useragent_sel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.useragent_sel.FormattingEnabled = true;
             this.useragent_sel.Location = new System.Drawing.Point(103, 42);
             this.useragent_sel.Name = "useragent_sel";
-            this.useragent_sel.Size = new System.Drawing.Size(155, 21);
-            this.useragent_sel.Sorted = true;
+            this.useragent_sel.Size = new System.Drawing.Size(190, 21);
             this.useragent_sel.TabIndex = 26;
             // 
-            // batchdelay_updown
+            // checks_updown
             // 
-            this.batchdelay_updown.AutoSize = true;
-            this.batchdelay_updown.Dock = System.Windows.Forms.DockStyle.Left;
-            this.batchdelay_updown.Location = new System.Drawing.Point(103, 81);
-            this.batchdelay_updown.Maximum = new decimal(new int[] {
-            60,
+            this.checks_updown.AutoSize = true;
+            this.checks_updown.Dock = System.Windows.Forms.DockStyle.Left;
+            this.checks_updown.Location = new System.Drawing.Point(103, 81);
+            this.checks_updown.Maximum = new decimal(new int[] {
+            16,
             0,
             0,
             0});
-            this.batchdelay_updown.Name = "batchdelay_updown";
-            this.batchdelay_updown.Size = new System.Drawing.Size(35, 20);
-            this.batchdelay_updown.TabIndex = 27;
-            this.batchdelay_updown.Value = new decimal(new int[] {
-            2,
+            this.checks_updown.Name = "checks_updown";
+            this.checks_updown.Size = new System.Drawing.Size(35, 20);
+            this.checks_updown.TabIndex = 27;
+            this.checks_updown.Value = new decimal(new int[] {
+            6,
             0,
             0,
             0});
-            this.batchdelay_updown.ValueChanged += new System.EventHandler(this.setting_marketplace_batchdelay_updown_ValueChanged);
+            this.checks_updown.ValueChanged += new System.EventHandler(this.setting_marketplace_checks_updown_ValueChanged);
             // 
-            // batchdelay_label2
+            // checks_label2
             // 
-            this.batchdelay_label2.AutoSize = true;
-            this.batchdelay_label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.batchdelay_label2.Location = new System.Drawing.Point(144, 78);
-            this.batchdelay_label2.Name = "batchdelay_label2";
-            this.batchdelay_label2.Size = new System.Drawing.Size(114, 26);
-            this.batchdelay_label2.TabIndex = 28;
-            this.batchdelay_label2.Text = "Seconds";
-            this.batchdelay_label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.checks_label2.AutoSize = true;
+            this.checks_label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checks_label2.Location = new System.Drawing.Point(144, 78);
+            this.checks_label2.Name = "checks_label2";
+            this.checks_label2.Size = new System.Drawing.Size(114, 26);
+            this.checks_label2.TabIndex = 28;
+            this.checks_label2.Text = "(0 = only on Re-Check)";
+            this.checks_label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // decompress_path_tb
             // 
@@ -1878,6 +2021,149 @@ namespace XBLMarketplace_For_PC.Forms
             this.iso_path_browse_btn.Text = "Browse";
             this.iso_path_browse_btn.UseVisualStyleBackColor = true;
             this.iso_path_browse_btn.Click += new System.EventHandler(this.iso_path_browse_btn_Click);
+            //
+            // setting_label_archiveTo
+            //
+            this.setting_label_archiveTo.AutoSize = true;
+            this.setting_label_archiveTo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setting_label_archiveTo.Location = new System.Drawing.Point(3, 234);
+            this.setting_label_archiveTo.Name = "setting_label_archiveTo";
+            this.setting_label_archiveTo.Size = new System.Drawing.Size(94, 26);
+            this.setting_label_archiveTo.TabIndex = 35;
+            this.setting_label_archiveTo.Text = "Archive Path:";
+            this.setting_label_archiveTo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // archive_path_tb
+            //
+            this.tableLayoutPanel13.SetColumnSpan(this.archive_path_tb, 3);
+            this.archive_path_tb.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.archive_path_tb.Location = new System.Drawing.Point(103, 237);
+            this.archive_path_tb.Name = "archive_path_tb";
+            this.archive_path_tb.Size = new System.Drawing.Size(190, 20);
+            this.archive_path_tb.TabIndex = 36;
+            this.archive_path_tb.Validating += new System.ComponentModel.CancelEventHandler(this.archive_path_tb_Validating);
+            this.archive_path_tb.Validated += new System.EventHandler(this.archive_path_tb_Validated);
+            //
+            // archive_path_browse_btn
+            //
+            this.archive_path_browse_btn.AutoSize = true;
+            this.archive_path_browse_btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.archive_path_browse_btn.Location = new System.Drawing.Point(299, 237);
+            this.archive_path_browse_btn.Name = "archive_path_browse_btn";
+            this.archive_path_browse_btn.Size = new System.Drawing.Size(63, 20);
+            this.archive_path_browse_btn.TabIndex = 37;
+            this.archive_path_browse_btn.Text = "Browse";
+            this.archive_path_browse_btn.UseVisualStyleBackColor = true;
+            this.archive_path_browse_btn.Click += new System.EventHandler(this.archive_path_browse_btn_Click);
+            //
+            // cache_group
+            //
+            this.cache_group.Controls.Add(this.cache_layout);
+            this.cache_group.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cache_group.Location = new System.Drawing.Point(374, 3);
+            this.cache_group.Name = "cache_group";
+            this.cache_group.Size = new System.Drawing.Size(367, 240);
+            this.cache_group.TabIndex = 2;
+            this.cache_group.TabStop = false;
+            this.cache_group.Text = "Cache";
+            //
+            // cache_layout
+            //
+            this.cache_layout.ColumnCount = 3;
+            this.cache_layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.cache_layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.cache_layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.cache_layout.Controls.Add(this.setting_label_cachedays, 0, 0);
+            this.cache_layout.Controls.Add(this.cachedays_updown, 1, 0);
+            this.cache_layout.Controls.Add(this.cachedays_label2, 2, 0);
+            this.cache_layout.Controls.Add(this.setting_label_cachesize, 0, 1);
+            this.cache_layout.Controls.Add(this.cachesize_label, 1, 1);
+            this.cache_layout.Controls.Add(this.clearcache_btn, 0, 2);
+            this.cache_layout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cache_layout.Location = new System.Drawing.Point(3, 16);
+            this.cache_layout.Name = "cache_layout";
+            this.cache_layout.RowCount = 4;
+            this.cache_layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.cache_layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.cache_layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.cache_layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.cache_layout.Size = new System.Drawing.Size(361, 221);
+            this.cache_layout.TabIndex = 0;
+            //
+            // setting_label_cachedays
+            //
+            this.setting_label_cachedays.AutoSize = true;
+            this.setting_label_cachedays.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setting_label_cachedays.Location = new System.Drawing.Point(3, 0);
+            this.setting_label_cachedays.Name = "setting_label_cachedays";
+            this.setting_label_cachedays.Size = new System.Drawing.Size(105, 26);
+            this.setting_label_cachedays.TabIndex = 0;
+            this.setting_label_cachedays.Text = "Keep catalog pages:";
+            this.setting_label_cachedays.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // cachedays_updown
+            //
+            this.cachedays_updown.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cachedays_updown.Location = new System.Drawing.Point(114, 3);
+            this.cachedays_updown.Maximum = new decimal(new int[] {
+            365,
+            0,
+            0,
+            0});
+            this.cachedays_updown.Name = "cachedays_updown";
+            this.cachedays_updown.Size = new System.Drawing.Size(45, 20);
+            this.cachedays_updown.TabIndex = 1;
+            this.cachedays_updown.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.cachedays_updown.ValueChanged += new System.EventHandler(this.setting_marketplace_cachedays_updown_ValueChanged);
+            //
+            // cachedays_label2
+            //
+            this.cachedays_label2.AutoSize = true;
+            this.cachedays_label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cachedays_label2.Location = new System.Drawing.Point(165, 0);
+            this.cachedays_label2.Name = "cachedays_label2";
+            this.cachedays_label2.Size = new System.Drawing.Size(193, 26);
+            this.cachedays_label2.TabIndex = 2;
+            this.cachedays_label2.Text = "Days (0 always refreshes)";
+            this.cachedays_label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // setting_label_cachesize
+            //
+            this.setting_label_cachesize.AutoSize = true;
+            this.setting_label_cachesize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setting_label_cachesize.Location = new System.Drawing.Point(3, 26);
+            this.setting_label_cachesize.Name = "setting_label_cachesize";
+            this.setting_label_cachesize.Size = new System.Drawing.Size(105, 26);
+            this.setting_label_cachesize.TabIndex = 3;
+            this.setting_label_cachesize.Text = "Cached:";
+            this.setting_label_cachesize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // cachesize_label
+            //
+            this.cachesize_label.AutoSize = true;
+            this.cache_layout.SetColumnSpan(this.cachesize_label, 2);
+            this.cachesize_label.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cachesize_label.Location = new System.Drawing.Point(114, 26);
+            this.cachesize_label.Name = "cachesize_label";
+            this.cachesize_label.Size = new System.Drawing.Size(244, 26);
+            this.cachesize_label.TabIndex = 4;
+            this.cachesize_label.Text = "—";
+            this.cachesize_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //
+            // clearcache_btn
+            //
+            this.clearcache_btn.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.clearcache_btn.Location = new System.Drawing.Point(3, 56);
+            this.clearcache_btn.Name = "clearcache_btn";
+            this.clearcache_btn.Size = new System.Drawing.Size(105, 26);
+            this.clearcache_btn.TabIndex = 5;
+            this.clearcache_btn.Text = "Clear Cache";
+            this.clearcache_btn.UseVisualStyleBackColor = true;
+            this.clearcache_btn.Click += new System.EventHandler(this.settings_clearcache_btn_Click);
             // 
             // credits_changelog_gbox
             // 
@@ -1995,6 +2281,8 @@ namespace XBLMarketplace_For_PC.Forms
             this.category_group.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
+            this.search_layout.ResumeLayout(false);
+            this.search_layout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.entrys_num)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.contentview)).EndInit();
             this.contentdescription_group.ResumeLayout(false);
@@ -2039,7 +2327,11 @@ namespace XBLMarketplace_For_PC.Forms
             this.tableLayoutPanel14.PerformLayout();
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.batchdelay_updown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checks_updown)).EndInit();
+            this.cache_group.ResumeLayout(false);
+            this.cache_layout.ResumeLayout(false);
+            this.cache_layout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cachedays_updown)).EndInit();
             this.credits_changelog_gbox.ResumeLayout(false);
             this.tableLayoutPanel15.ResumeLayout(false);
             this.tableLayoutPanel15.PerformLayout();
@@ -2068,6 +2360,10 @@ namespace XBLMarketplace_For_PC.Forms
         private System.Windows.Forms.Button prev_btn;
         private System.Windows.Forms.GroupBox category_group;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.TableLayoutPanel search_layout;
+        private System.Windows.Forms.TextBox search_tb;
+        private System.Windows.Forms.Button search_btn;
+        private System.Windows.Forms.Button searchclear_btn;
         private System.Windows.Forms.ComboBox cat_select;
         private System.Windows.Forms.Label entrypp_label;
         private System.Windows.Forms.NumericUpDown entrys_num;
@@ -2125,7 +2421,7 @@ namespace XBLMarketplace_For_PC.Forms
         private System.Windows.Forms.Label filler_label_a;
         private System.Windows.Forms.Label setting_label_Query_Language;
         private System.Windows.Forms.Label setting_label_useragent;
-        private System.Windows.Forms.Label setting_label_batchdelay;
+        private System.Windows.Forms.Label setting_label_checks;
         private System.Windows.Forms.Label setting_label_decompressTo;
         private System.Windows.Forms.Label setting_label_downloadTo;
         private System.Windows.Forms.Label setting_label_IsoTo;
@@ -2136,14 +2432,31 @@ namespace XBLMarketplace_For_PC.Forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label displayVersionLabelnomodify;
-        private System.Windows.Forms.NumericUpDown batchdelay_updown;
-        private System.Windows.Forms.Label batchdelay_label2;
+        private System.Windows.Forms.NumericUpDown checks_updown;
+        private System.Windows.Forms.Label checks_label2;
         private System.Windows.Forms.Label versionval_label;
         private System.Windows.Forms.Button About_btn;
         private System.Windows.Forms.TabPage Downloads_tabPage;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsslNoChange1;
         private System.Windows.Forms.ToolStripStatusLabel DownloadSpeed_tssl;
+        private System.Windows.Forms.ToolStripStatusLabel catalogstatus_tssl;
+        private System.Windows.Forms.ToolStripStatusLabel linkstatus_tssl;
+        private System.Windows.Forms.ToolStripStatusLabel archivestatus_tssl;
+        private System.Windows.Forms.Button archive_btn;
+        private System.Windows.Forms.Button archivelist_btn;
+        private System.Windows.Forms.Button archiveopen_btn;
+        private System.Windows.Forms.Label setting_label_archiveTo;
+        private System.Windows.Forms.TextBox archive_path_tb;
+        private System.Windows.Forms.Button archive_path_browse_btn;
+        private System.Windows.Forms.GroupBox cache_group;
+        private System.Windows.Forms.TableLayoutPanel cache_layout;
+        private System.Windows.Forms.Label setting_label_cachedays;
+        private System.Windows.Forms.NumericUpDown cachedays_updown;
+        private System.Windows.Forms.Label cachedays_label2;
+        private System.Windows.Forms.Label setting_label_cachesize;
+        private System.Windows.Forms.Label cachesize_label;
+        private System.Windows.Forms.Button clearcache_btn;
         private System.Windows.Forms.TableLayoutPanel Downloads_tlp;
         private BetterListViewEx downloadmanager_blv;
         private System.Windows.Forms.GroupBox downloadmanager_controls_gb;

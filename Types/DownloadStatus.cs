@@ -6,7 +6,8 @@ namespace XBLMarketplace_For_PC.Types
         Downloading,
         Canceled,
         Waiting,
-        Clearing
+        Clearing,
+        Failed
 
     }
 }

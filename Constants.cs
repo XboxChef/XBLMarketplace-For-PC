@@ -27,7 +27,13 @@ namespace XBLMarketplace_For_PC
 
         public static class NetworkConnectivity
         {
-            public const string Useragent = "Xbox Live Client/2.0.15574.0";
+            //The final Xbox 360 dashboard, what a console signed in to Xbox Live sends today
+            public const string DefaultUseragent = "Xbox Live Client/2.0.17559.0";
+
+            /// <summary>
+            /// Sent with every request, chosen under Info &amp; Settings.
+            /// </summary>
+            public static string Useragent { get; set; } = DefaultUseragent;
             public const string Host = "catalog.xboxlive.com";
             public const string Location = "/Catalog/Catalog.asmx/Query";
             public const string MethodName = "FindGames";
@@ -143,10 +149,28 @@ namespace XBLMarketplace_For_PC
 
             public static BindingSource CategoryBindingSource = new BindingSource() {Categorys};
 
-            public static List<string> UserAgents { get; private set; } = new List<string>()
+            //Xbox 360 dashboard builds, newest first. The first is the default.
+            public static List<UserAgent> UserAgents { get; private set; } = new List<UserAgent>
             {
-                "Xbox Live Client/2.0.15574.0"
+                Dashboard("2.0.17559.0", "final"),
+                Dashboard("2.0.17526.0"),
+                Dashboard("2.0.17511.0"),
+                Dashboard("2.0.17349.0"),
+                Dashboard("2.0.16756.0"),
+                Dashboard("2.0.16537.0"),
+                Dashboard("2.0.16202.0"),
+                Dashboard("2.0.15574.0"),
+                Dashboard("2.0.14719.0"),
+                Dashboard("2.0.13604.0"),
+                Dashboard("2.0.12611.0"),
+                Dashboard("2.0.9199.0")
             };
+
+            private static UserAgent Dashboard(string version, string note = null)
+            {
+                string value = "Xbox Live Client/" + version;
+                return new UserAgent { Name = note == null ? value : value + " (" + note + ")", Value = value };
+            }
 
             public static BindingSource UserAgentBindingSource = new BindingSource() {UserAgents};
         }

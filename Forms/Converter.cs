@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,9 @@ using God2Iso.Types;
 using JasonNS.Components;
 using JasonNS.EventArguments;
 using JasonNS.Types;
+using XBLMarketplace_For_PC.Helpers;
 using XBLMarketplace_For_PC.Types;
+using XCPpackage;
 
 namespace XBLMarketplace_For_PC.Forms
 {
@@ -16,8 +19,8 @@ namespace XBLMarketplace_For_PC.Forms
     {
         private void converter_init()
         {
-            _xcpList = new ThreadedBindingList<XcpInstance>();
-            _godList = new ThreadedBindingList<GameOnDemand>();
+            _xcpList = new UiBindingList<XcpInstance>();
+            _godList = new UiBindingList<GameOnDemand>();
             _isoList = new ThreadedBindingList<IsoInstance>();
             xcptogod_blvex.DataSource = _xcpList;
             godtoiso_blvex.DataSource = _godList;
@@ -51,7 +54,10 @@ namespace XBLMarketplace_For_PC.Forms
             throw new NotImplementedException();
         }
 
-        private void xcptogod_Unpack_btn_Click(object sender, EventArgs e)
+        private readonly HashSet<XcpInstance> _unpacking = new HashSet<XcpInstance>();
+        private bool _unpackAllCanceled;
+
+        private async void xcptogod_Unpack_btn_Click(object sender, EventArgs e)
         {
             XcpInstance xcp = (XcpInstance) xcptogod_blvex.SelectedValue;
             if (xcp == null)
@@ -59,27 +65,45 @@ namespace XBLMarketplace_For_PC.Forms
                 MessageBox.Show("Please Select a Game to Unpack", "Alert");
                 return;
             }
-            Task.Run(() =>
+            string error = await converter_UnpackAsync(xcp);
+            if (error != null) MessageBox.Show(this, error, "Unpack", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        /// <summary>
+        /// Unpacks one package off the UI thread and moves it to the ISO list when done. Returns why it failed, or null.
+        /// </summary>
+        private async Task<string> converter_UnpackAsync(XcpInstance xcp)
+        {
+            //Encrypted add-ons are flagged when added, no need to try
+            if (xcp.Error is XcpNotSupportedException) return xcp.Error.Message;
+            if (!_unpacking.Add(xcp)) return null;
+            try
             {
-                if (String.Compare(Path.GetExtension(xcp.InFile), ".xcp", StringComparison.OrdinalIgnoreCase) == 0)
+                await Task.Run(() =>
                 {
-                    xcp.UnpackAndSplitComplete += Xcp_UnpackAndSplitComplete;
-                    xcp.FullExtract();
-                }
-                else if (string.Compare(Path.GetExtension(xcp.InFile), ".xup", StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    xcp.UnpackCompleted += Xcp_UnpackCompleted;
-                    xcp.Split();
-                }
-            }).ContinueWith(prevTask =>
-            {
-                if (prevTask.Exception != null) throw prevTask.Exception;
+                    if (string.Compare(Path.GetExtension(xcp.InFile), ".xcp", StringComparison.OrdinalIgnoreCase) == 0)
+                        xcp.FullExtract();
+                    else if (string.Compare(Path.GetExtension(xcp.InFile), ".xup", StringComparison.OrdinalIgnoreCase) == 0)
+                        xcp.Split();
+                });
                 if (xcp.GodInstance != null)
                 {
                     _godList.Add(xcp.GodInstance);
                     _xcpList.Remove(xcp);
                 }
-            });
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return ex is XcpNotSupportedException ? ex.Message : "Unpacking \"" + xcp.DisplayName + "\" failed: " + ex.Message;
+            }
+            finally
+            {
+                _unpacking.Remove(xcp);
+                int index = _xcpList.IndexOf(xcp);
+                if (index >= 0) _xcpList.ResetItem(index);
+            }
         }
 
         private void xcptogod_RemoveFinished_btn_Click(object sender, EventArgs e)
@@ -105,14 +129,35 @@ namespace XBLMarketplace_For_PC.Forms
             }
         }
 
-        private void xcptogod_UnpackAll_btn_Click(object sender, EventArgs e)
+        private async void xcptogod_UnpackAll_btn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            xcptogod_UnpackAll_btn.Enabled = false;
+            xcptogod_cancel_btn.Enabled = true;
+            _unpackAllCanceled = false;
+            var failures = new List<string>();
+            try
+            {
+                //One at a time, each unpack already uses the whole disk
+                foreach (XcpInstance xcp in _xcpList.ToList())
+                {
+                    if (_unpackAllCanceled) break;
+                    string error = await converter_UnpackAsync(xcp);
+                    if (error != null) failures.Add(error);
+                }
+            }
+            finally
+            {
+                xcptogod_UnpackAll_btn.Enabled = true;
+                xcptogod_cancel_btn.Enabled = false;
+            }
+            if (failures.Count > 0)
+                MessageBox.Show(this, string.Join(Environment.NewLine + Environment.NewLine, failures), "Unpack All", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void xcptogod_cancel_btn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //The package being unpacked can't be stopped part way, Unpack All stops after it
+            _unpackAllCanceled = true;
         }
 
         #endregion
@@ -209,20 +254,6 @@ namespace XBLMarketplace_For_PC.Forms
         #endregion
 
         #region EventCallBacks
-
-        private void Xcp_UnpackAndSplitComplete(object sender, EventArgs e)
-        {
-            XcpInstance xcp = (XcpInstance)sender;
-            xcp.UnpackAndSplitComplete -= Xcp_UnpackAndSplitComplete;
-            _xcpList.Remove(xcp);
-        }
-
-        private void Xcp_UnpackCompleted(object sender, EventArgs e)
-        {
-            XcpInstance xcp = (XcpInstance)sender;
-            xcp.UnpackCompleted -= Xcp_UnpackCompleted;
-            _xcpList.Remove(xcp);
-        }
 
         private void God_CreateIsoProgress(object sender, ProgressChangedEventArgs e)
         {

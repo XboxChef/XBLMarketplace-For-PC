@@ -130,5 +130,53 @@ namespace XBLMarketplace_For_PC.Properties {
                 this["DownloadPathString"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int catalog_cache_days {
+            get {
+                return ((int)(this["catalog_cache_days"]));
+            }
+            set {
+                this["catalog_cache_days"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int check_parallelism {
+            get {
+                return ((int)(this["check_parallelism"]));
+            }
+            set {
+                this["check_parallelism"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string useragent {
+            get {
+                return ((string)(this["useragent"]));
+            }
+            set {
+                this["useragent"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ArchivePathString {
+            get {
+                return ((string)(this["ArchivePathString"]));
+            }
+            set {
+                this["ArchivePathString"] = value;
+            }
+        }
     }
 }

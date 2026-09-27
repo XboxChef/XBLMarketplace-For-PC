@@ -10,6 +10,38 @@
     using System.Runtime.InteropServices;
     using System.Threading;
 
+    public enum XcpFormat
+    {
+        //Back to back zlib streams around an SVOD container: Games on Demand and full game demos
+        Zlib,
+        //A Microsoft cabinet: add-ons such as DLC, arcade games, themes and avatar items
+        Cabinet,
+        //A cabinet encrypted with RC4, keyed from the license a console receives for the content
+        Encrypted
+    }
+
+    /// <summary>
+    /// The package isn't a Games on Demand style zlib package, so it can't be unpacked here.
+    /// </summary>
+    public class XcpNotSupportedException : Exception
+    {
+        public XcpNotSupportedException(XcpFormat format, string fileName) : base(Describe(format, fileName))
+        {
+            Format = format;
+        }
+
+        public XcpFormat Format { get; }
+
+        private static string Describe(XcpFormat format, string fileName)
+        {
+            if (format == XcpFormat.Encrypted)
+                return "\"" + fileName + "\" is encrypted. Xbox Live encrypts add-ons (DLC, arcade games, themes, avatar items) " +
+                       "with a key only a console licensed for them receives, so it can't be unpacked. " +
+                       "Games on Demand packages aren't encrypted and can be.";
+            return "\"" + fileName + "\" is an add-on package, not a Games on Demand package, so it can't be unpacked into one.";
+        }
+    }
+
     public class XcpUnpack : IDisposable
     {
         private FileInfo _fileIn;
@@ -35,6 +67,22 @@
 
         public XcpUnpack(string fileIn) : this(new FileInfo(fileIn))
         {
+        }
+
+        /// <summary>
+        /// Tells unpackable packages (a zlib header) from cabinets ("MSCF") and encrypted cabinets (neither).
+        /// </summary>
+        public static XcpFormat DetectFormat(FileInfo file)
+        {
+            byte[] head = new byte[4];
+            using (FileStream stream = file.OpenRead())
+            {
+                if (stream.Read(head, 0, head.Length) < head.Length) return XcpFormat.Encrypted;
+            }
+            if (head[0] == 'M' && head[1] == 'S' && head[2] == 'C' && head[3] == 'F') return XcpFormat.Cabinet;
+            //zlib: deflate method with a header checksum that divides by 31 (RFC 1950)
+            if ((head[0] & 0x0F) == 8 && ((head[0] << 8) | head[1]) % 31 == 0) return XcpFormat.Zlib;
+            return XcpFormat.Encrypted;
         }
 
         public List<FileInfo> DecompressAndSplit(bool cleanup = false, string directoryOut = null)
@@ -63,7 +111,11 @@
             {
                 throw new FileNotFoundException("File Not Found", this._fileIn.FullName);
             }
-            FileOptions options = cleanup ? FileOptions.DeleteOnClose : FileOptions.None;
+            XcpFormat format = DetectFormat(this._fileIn);
+            if (format != XcpFormat.Zlib)
+            {
+                throw new XcpNotSupportedException(format, this._fileIn.Name);
+            }
             if (directoryOut == null)
             {
                 info = new FileInfo(this._fileIn.DirectoryName + @"\" + Path.GetFileNameWithoutExtension(this._fileIn.Name) + ".xup");
@@ -79,7 +131,7 @@
             try
             {
                 FileInfo info2;
-                using (FILE file = new FILE(this._fileIn.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, 0x4000, options))
+                using (FILE file = new FILE(this._fileIn.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, 0x4000, FileOptions.None))
                 {
                     if (info.Exists)
                     {
@@ -87,6 +139,8 @@
                     }
                     info2 = this.first_pass(file, info.FullName);
                 }
+                //Only remove the source once it unpacked, DeleteOnClose used to delete it even when unpacking failed
+                if (cleanup) this._fileIn.Delete();
                 this.OnUnpackCompleted(new EventArgs());
                 this._fileIn = info2;
                 info3 = info2;
@@ -138,9 +192,11 @@
                 FlushMode = FlushType.Full
             };
             short num1 = 0;
-            while (zlibStream.Read(buffer, 0, buffer.Length) != 0)
+            int read;
+            while ((read = zlibStream.Read(buffer, 0, buffer.Length)) != 0)
             {
-                dest.Write(buffer, 0, buffer.Length);
+                //Writing the whole buffer padded the output with stale bytes whenever a read came up short
+                dest.Write(buffer, 0, read);
                 short num2 = (short)Math.Ceiling(((double)this._lastStream + (double)zlibStream.TotalIn) / (double)this._srcsize * 100.0);
                 if ((int)num1 != (int)num2)
                 {
@@ -149,9 +205,12 @@
                     this.OnUnpackAndSplitProgressChanged(new ProgressChangedEventArgs((int)num2 / 2));
                 }
             }
-            this._lastStream += zlibStream.TotalIn;
-            source.Position = this._lastStream;
+            long consumed = zlibStream.TotalIn;
             zlibStream.Dispose();
+            //Trailing bytes that aren't a zlib stream would otherwise loop forever
+            if (consumed == 0) throw new InvalidDataException("No zlib stream at offset " + this._lastStream);
+            this._lastStream += consumed;
+            source.Position = this._lastStream;
         }
 
         protected virtual void OnSplitCompleted(EventArgs e)
@@ -240,12 +299,13 @@
                     Directory.CreateDirectory(string.Format("{0}.data", (object)filePath));
                 using (FILE file = new FILE(string.Format("{0}.data\\Data{1:D4}", (object)filePath, (object)num2), FileMode.Create, FileAccess.Write, FileShare.Read, 16384))
                 {
-                    for (int index = 0; index < 10404; ++index)
+                    for (int index = 0; index < 10404 && num1 < length; ++index)
                     {
                         int count = num1 + 16384L >= length ? (int)(length - num1) : 16384;
-                        unpackedXcp.Read(buffer2, 0, count);
-                        file.Write(buffer2, 0, count);
-                        num1 += (long)count;
+                        int read = unpackedXcp.Read(buffer2, 0, count);
+                        if (read == 0) throw new EndOfStreamException("Unpacked package ended early at " + num1);
+                        file.Write(buffer2, 0, read);
+                        num1 += (long)read;
                         short num4 = (short)Math.Ceiling((double)num1 / (double)length * 100.0);
                         if ((int)num4 != (int)num3)
                         {
@@ -264,12 +324,11 @@
         public List<FileInfo> SplitXcp(bool cleanup = false, string directoryOut = null)
         {
             List<FileInfo> list2;
-            FileOptions options = cleanup ? FileOptions.DeleteOnClose : FileOptions.None;
             DirectoryInfo info = (directoryOut != null) ? new DirectoryInfo(directoryOut) : new DirectoryInfo(this._fileIn.DirectoryName + @"\" + Path.GetFileNameWithoutExtension(this._fileIn.FullName));
             try
             {
                 List<FileInfo> list;
-                using (FILE file = new FILE(this._fileIn.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, 0x4000, options))
+                using (FILE file = new FILE(this._fileIn.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, 0x4000, FileOptions.None))
                 {
                     if (!info.Exists)
                     {
@@ -277,6 +336,7 @@
                     }
                     list = this.second_pass(file, info.FullName);
                 }
+                if (cleanup) this._fileIn.Delete();
                 this.OnSplitCompleted(new EventArgs());
                 list2 = list;
             }

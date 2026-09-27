@@ -43,7 +43,13 @@ namespace XBLMarketplace_For_PC.Types
 
             if (string.Compare(Path.GetExtension(InFile), ".xcp", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                if (start)
+                //Encrypted add-ons can never be unpacked, so show them as failed right away
+                XcpFormat? format = TryDetectFormat(InFile);
+                if (format.HasValue && format.Value != XcpFormat.Zlib)
+                {
+                    Error = new XcpNotSupportedException(format.Value, Path.GetFileName(InFile));
+                }
+                else if (start)
                 {
                     FullExtract();
                 }
@@ -147,11 +153,33 @@ namespace XBLMarketplace_For_PC.Types
         public void FullExtract()
         {
             _fullextract = true;
-            Extract();
-            Split();
+            Track(() =>
+            {
+                ExtractCore();
+                SplitCore();
+            });
         }
 
-        public void Split()
+        public void Split() => Track(SplitCore);
+
+        public void Extract() => Track(ExtractCore);
+
+        //Records a failure so the list shows Errored instead of staying on Unpacking or Splitting
+        private void Track(Action work)
+        {
+            Error = null;
+            try
+            {
+                work();
+            }
+            catch (Exception e)
+            {
+                Error = e;
+                throw;
+            }
+        }
+
+        private void SplitCore()
         {
             Status = PackageStatus.Splitting;
             _godfilelist = _unpackerInstance.SplitXcp(_cleanup, OutFolder);
@@ -159,11 +187,24 @@ namespace XBLMarketplace_For_PC.Types
             Status = PackageStatus.Waiting;
         }
 
-        public void Extract()
+        private void ExtractCore()
         {
             Status = PackageStatus.Unpacking;
             InFile = _unpackerInstance.DecompressXcp(_cleanup, OutFolder).FullName;
             Status = PackageStatus.Waiting;
+        }
+
+        private static XcpFormat? TryDetectFormat(string path)
+        {
+            try
+            {
+                return XcpUnpack.DetectFormat(new FileInfo(path));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return null;
+            }
         }
     }
 }

@@ -37,7 +37,9 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BetterListViewExpress" />
+    <Reference Include="BetterListViewExpress">
+      <HintPath>lib\BetterListViewExpress.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.Desktop.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Images.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -129,10 +131,14 @@
     <Compile Include="Forms\settings.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Helpers\Archiver.cs" />
     <Compile Include="Helpers\BatchUrlChecker.cs" />
+    <Compile Include="Helpers\CatalogSearch.cs" />
     <Compile Include="Helpers\CatalogueAssist.cs" />
+    <Compile Include="Helpers\ContentCache.cs" />
     <Compile Include="Helpers\DM_EventSubscriber.cs" />
     <Compile Include="Helpers\DownloadAssist.cs" />
+    <Compile Include="Helpers\UiBindingList.cs" />
     <Compile Include="Helpers\Webhelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
@@ -142,6 +148,8 @@
     <Compile Include="Structs\GameCapabilityEntry.cs" />
     <Compile Include="Structs\Language.cs" />
     <Compile Include="Structs\RegionID.cs" />
+    <Compile Include="Structs\UserAgent.cs" />
+    <Compile Include="Types\CatalogueResult.cs" />
     <Compile Include="Types\DownloadInstance.cs" />
     <Compile Include="Types\DownloadStatus.cs" />
     <Compile Include="Types\GameCapabilities.cs" />

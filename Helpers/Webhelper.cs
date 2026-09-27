@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using XBLMarketplace_For_PC.Properties;
@@ -11,14 +14,12 @@ namespace XBLMarketplace_For_PC.Helpers
 {
     public class Webhelper
     {
-        //ToDo: Add Setting for User to change UserAgent
-        // public string UserAgent { get; set; } = "Xbox Live Client/2.0.15574.0";
-        public const string Useragent = Constants.NetworkConnectivity.Useragent;
         public const string Host = Constants.NetworkConnectivity.Host;
         public const string Location = Constants.NetworkConnectivity.Location;
         public const string MethodName = Constants.NetworkConnectivity.MethodName;
         //public string MediaTypes { get; set; } = "23";
         private XDocument _xmldoc = new XDocument();
+        private int _querySerial;
 
         public Webhelper()
         {
@@ -38,6 +39,12 @@ namespace XBLMarketplace_For_PC.Helpers
         public string ImageSizes { get; set; } = "15";
         public string UserTypes { get; set; } = "1";
         public MediaId MediaTypes { get; set; } = new MediaId("Default", "23");
+
+        /// <summary>
+        /// Cached pages younger than this are used without asking Xbox Live.
+        /// Older pages are still used if Xbox Live can't be reached.
+        /// </summary>
+        public TimeSpan CacheMaxAge { get; set; } = TimeSpan.FromDays(7);
 
         public XDocument XmlDoc
         {
@@ -59,36 +66,80 @@ namespace XBLMarketplace_For_PC.Helpers
             if (XmlDocLoaded != null) XmlDocLoaded(this, e);
         }
 
-        public XDocument SubmitQuery()
+        /// <summary>
+        /// Loads the current page off the UI thread, from cache when possible.
+        /// Returns null when a newer query was submitted before this one finished.
+        /// </summary>
+        public async Task<CatalogueResult> SubmitQueryAsync()
         {
-            QueryXboxCatalogue(Useragent
-                , Host
-                , Location
-                , MethodName
-                , Language.Code
-                , Locales.LegalId
-                , Store
-                , PageSize
-                , PageNum
-                , DetailView
-                , OfferFilterLevel
-                , CategoryIDs
-                , OrderBy
-                , OrderDirection
-                , ImageFormats
-                , ImageSizes
-                , UserTypes
-                , MediaTypes.Id);
-            return XmlDoc;
+            string url = BuildUrl(PageSize, PageNum, DetailView);
+            int serial = ++_querySerial;
+            TimeSpan maxAge = CacheMaxAge;
+
+            CatalogueResult result = await Task.Run(() => FetchCatalogue(url, maxAge));
+            if (serial != _querySerial) return null;
+            if (result.Page != null) XmlDoc = result.Page;
+            return result;
         }
 
-        private XDocument QueryXboxCatalogue(
-            string userAgent, string host, string location
+        /// <summary>
+        /// Makes a page load still in flight be ignored, used when a search replaces the list.
+        /// </summary>
+        public void CancelPendingQuery() => _querySerial++;
+
+        /// <summary>
+        /// A query for the current category, region and language with the given paging and detail,
+        /// optionally narrowed to specific items.
+        /// </summary>
+        internal string BuildUrl(string pageSize, string pageNum, string detailView, IEnumerable<string> mediaIds = null)
+        {
+            return BuildQueryUrl(Host, Location, MethodName, Language.Code, Locales.LegalId, Store, pageSize, pageNum, detailView,
+                OfferFilterLevel, CategoryIDs, OrderBy, OrderDirection, ImageFormats, ImageSizes, UserTypes, MediaTypes.Id, mediaIds);
+        }
+
+        internal static CatalogueResult FetchCatalogue(string url, TimeSpan maxAge)
+        {
+            XDocument cached;
+            DateTime savedUtc;
+            bool haveCache = ContentCache.TryLoadPage(url, out cached, out savedUtc);
+            if (haveCache && DateTime.UtcNow - savedUtc < maxAge)
+                return new CatalogueResult(cached, CatalogueSource.Cache, savedUtc);
+
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                request.UserAgent = Constants.NetworkConnectivity.Useragent;
+                request.Timeout = 20000;
+                request.ReadWriteTimeout = 20000;
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                string result;
+                using (WebResponse response = request.GetResponse())
+                using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                {
+                    result = sr.ReadToEnd().Trim();
+                }
+                XDocument page = XDocument.Parse(result);
+                if (!page.Descendants(Constants.NetworkConnectivity.Namespaces.Live + "totalItems").Any())
+                    throw new InvalidDataException("Catalogue response is not a product feed");
+                ContentCache.SavePage(url, result);
+                return new CatalogueResult(page, CatalogueSource.Network, DateTime.UtcNow);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                if (haveCache) return new CatalogueResult(cached, CatalogueSource.StaleCache, savedUtc);
+                return new CatalogueResult(null, CatalogueSource.Failed, DateTime.MinValue);
+            }
+        }
+
+        private static string BuildQueryUrl(
+            string host, string location
             , string methodName, string locale, string legalLocale
             , string store, string pageSize, string pageNum 
             , string detailView , string offerFilterLevel , string categoryIDs 
             , string orderBy , string orderDirection , string imageFormats
             , string imageSizes, string userTypes , string mediaTypes
+            , IEnumerable<string> mediaIds = null
             ){
             //parse uri
             var parameters = HttpUtility.ParseQueryString(string.Empty);
@@ -122,6 +173,14 @@ namespace XBLMarketplace_For_PC.Helpers
             parameters.Add("Values", userTypes.ToString());
             parameters.Add("Names", "MediaTypes");
             parameters.Add("Values", mediaTypes.ToString());
+            if (mediaIds != null)
+            {
+                foreach (string id in mediaIds)
+                {
+                    parameters.Add("Names", "MediaIds");
+                    parameters.Add("Values", id);
+                }
+            }
             #endregion
             #region OldParameters
             /*var parameter0 = HttpUtility.ParseQueryString(string.Empty);var parameter1 = HttpUtility.ParseQueryString(string.Empty);
@@ -154,25 +213,7 @@ namespace XBLMarketplace_For_PC.Helpers
                 Path = location,
                 Query = parameters.ToString()
             };
-
-            try
-            {
-                HttpWebRequest request = WebRequest.Create(uri.ToString()) as HttpWebRequest;
-                request.UserAgent = userAgent;
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-
-                StreamReader sr = new StreamReader(response.GetResponseStream());
-                string result = sr.ReadToEnd().Trim();
-                XmlDoc = XDocument.Parse(result);
-                //OnxmlDocLoaded(null);
-                return XmlDoc;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                Console.Read();
-                return null;
-            }
-            }
+            return uri.ToString();
+        }
     }
 }
